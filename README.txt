@@ -3,7 +3,7 @@ Net::Ftp::List
     http://code.statelesssystems.com
 
 == DESCRIPTION
-  
+
 Ruby extension to Dan Bersteins ftpparse C lib to parse FTP LIST responses.
 
 From Dan Bernstein's ftpparse page at http://cr.yp.to/ftpparse.html
