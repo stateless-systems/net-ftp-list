@@ -6,6 +6,7 @@ module Net
       # TODO: More rubyish aliases.
       # Perhaps a mixin so for Net::FTP's to return List objects for
       # list, ls and dir.
+      alias_method :basename, :name
 
       def file?
         flagtryretr == 1
