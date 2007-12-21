@@ -1,13 +1,13 @@
 require 'netftplist' # The C extension.
 
-module Net # :nodoc:
-  class FTP # :nodoc:
+module Net #:nodoc:
+  class FTP #:nodoc:
     
     # Parse FTP LIST responses.
     #
     # Ruby extension to Dan Bersteins ftpparse C lib to parse FTP LIST responses.
-    # Simply feed each line fom Net::FTP's <tt>list</tt>, <tt>ls</tt> or <tt>dir</tt> methods to the constructor and
-    # it'll have a crack at parsing the line.
+    # Simply feed each entry fom Net::FTP's <tt>list</tt>, <tt>ls</tt> or <tt>dir</tt> methods to the constructor and
+    # it'll have a crack at parsing it.
     #
     # == Creation
     # 
@@ -33,6 +33,8 @@ module Net # :nodoc:
       # TODO: More rubyish aliases.
       # Perhaps a mixin so for Net::FTP's to return List objects for list, ls and dir.
       
+      # The name of the file entry. This is the same name that NLST would return except in the case of symlinks where
+      # you will get name as read back by the LIST command (normally in the form of <tt>source -> target</tt>).
       alias_method :basename, :name
 
       # The entry looks like a file. Try to RETR.

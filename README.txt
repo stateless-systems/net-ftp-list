@@ -1,6 +1,4 @@
-Net::Ftp::List
-    by Stateless Systems
-    http://statelesssystems.com
+= Net::Ftp::List
 
 == DESCRIPTION
 
@@ -17,9 +15,7 @@ of salt and expect failures.
 
 See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
 
-From Dan Bernstein's ftpparse page at http://cr.yp.to/ftpparse.html
-
----
+From Dan Bernstein's ftpparse page at: http://cr.yp.to/ftpparse.html
 
 ftpparse is a library for parsing FTP LIST responses.
 
@@ -39,8 +35,6 @@ ftpparse() routine, along with a pointer to a struct ftpparse. If
 ftpparse() returns 1, you can find a filename and various other useful
 information inside the struct ftpparse.
 
----
-
 == TODO & PROBLEMS
 
 * I'm new to Ruby and C, I'm sure some exist :)
@@ -49,7 +43,7 @@ information inside the struct ftpparse.
   have time to write something myself. With more time an OO'd approach much like the apache projects common FTP LIST
   parser implementation (minus all the Java-ness):
   
-  http://svn.apache.org/viewvc/commons/proper/net/trunk/src/java/org/apache/commons/net/ftp/
+  http://svn.apache.org/viewvc/commons/proper/net/trunk/src/java/org/apache/commons/net/ftp
 
 == SYNOPSIS
 
@@ -66,22 +60,20 @@ information inside the struct ftpparse.
 == CREDITS
 
   * Dan Bernstein's ftpparse. http://cr.yp.to/ftpparse.html
-  * Documentation from a Python extension. http://c0re.jp/c0de/ftpparse/
+  * A Python extension. http://c0re.jp/c0de/ftpparse/
 
 == LICENSE
 
-From Dan Bernstein's ftpparse page:
+From Dan Bernstein's ftpparse page "Commercial use of ftpparse is fine, as long as you let me know
+what programs you're using it in".
 
----
-
-Commercial use of ftpparse is fine, as long as you let me know what programs
-you're using it in.
-
----
+The rest of this extension is under the MIT license, go nuts.
 
 (The MIT License)
 
-Copyright (c) 2007 Stateless Systems
+Copyright (c) 2007 Shane Hanna
+Stateless Systems
+http://statelesssystems.com
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
