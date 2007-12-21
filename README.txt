@@ -1,14 +1,25 @@
 Net::Ftp::List
-    by Shane Hanna
-    http://code.statelesssystems.com
+    by Stateless Systems
+    http://statelesssystems.com
 
 == DESCRIPTION
 
 Ruby extension to Dan Bersteins ftpparse C lib to parse FTP LIST responses.
 
+According to the FTP RFC the LIST command "information on a file may vary widely from system to system, this
+information may be hard to use automatically in a program, but may be quite useful to a human user".
+Unfortunately the NLST command "intended to return information that can be used by a program to further process
+the files automatically" only returns the filename and no other information. If you want to know to know even
+simple things like 'is the NLST entry a directory or file' you are left with the choice of attempting to CWD to
+(and back from) each entry or parsing the LIST command. This extension is an attempt at parsing the LIST command
+and as such is subject to all the variability that results from such an undertaking, take responses with a grain
+of salt and expect failures.
+
+See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
+
 From Dan Bernstein's ftpparse page at http://cr.yp.to/ftpparse.html
 
----8<--------------------------------------------------------------------------
+---
 
 ftpparse is a library for parsing FTP LIST responses.
 
@@ -28,16 +39,17 @@ ftpparse() routine, along with a pointer to a struct ftpparse. If
 ftpparse() returns 1, you can find a filename and various other useful
 information inside the struct ftpparse.
 
----8<--------------------------------------------------------------------------
+---
 
-== PROBLEMS
+== TODO & PROBLEMS
 
-I'm new to Ruby and C, I'm sure some exist.
-
-Dan's requirement that you tell him when you use ftpparse in commercial
-software is fine but annoying. It'd be nice to replace the C with pure Ruby
-since I really only chose the C extension since I didn't have time to write
-something myself.
+* I'm new to Ruby and C, I'm sure some exist :)
+* Dan's requirement that you tell him when you use ftpparse in commercial software is fine, his choice, but I find it
+  annoying. It would be nice to replace the C with pure Ruby since I really only chose the C extension since I didn't
+  have time to write something myself. With more time an OO'd approach much like the apache projects common FTP LIST
+  parser implementation (minus all the Java-ness):
+  
+  http://svn.apache.org/viewvc/commons/proper/net/trunk/src/java/org/apache/commons/net/ftp/
 
 == SYNOPSIS
 
@@ -58,18 +70,18 @@ something myself.
 
 == LICENSE
 
-From Dan Bernstein's ftpparse page
+From Dan Bernstein's ftpparse page:
 
----8<--------------------------------------------------------------------------
+---
 
 Commercial use of ftpparse is fine, as long as you let me know what programs
 you're using it in.
 
----8<--------------------------------------------------------------------------
+---
 
 (The MIT License)
 
-Copyright (c) 2007 FIX
+Copyright (c) 2007 Stateless Systems
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
