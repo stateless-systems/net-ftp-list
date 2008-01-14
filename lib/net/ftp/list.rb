@@ -1,56 +1,67 @@
-require 'netftplist' # The C extension.
+require 'net/ftp'
+require 'net/ftp/list/parser'
+
+# The order here is important for the time being. Corse grained parsers should appear before specializations because
+# the whole thing is searched in reverse order.
+require 'net/ftp/list/unix'
 
 module Net #:nodoc:
   class FTP #:nodoc:
-    
+
+    alias_method :raw_list, :list
+    def list(*args, &block)
+      # TODO: Map in void context when you pass a block.
+      raw_list(*args).map do |raw|
+        entry = Net::FTP::List.parse(raw)
+        block ? yield(entry) : entry
+      end
+    end
+
     # Parse FTP LIST responses.
     #
-    # Ruby extension to Dan Bersteins ftpparse C lib to parse FTP LIST responses.
-    # Simply feed each entry fom Net::FTP's <tt>list</tt>, <tt>ls</tt> or <tt>dir</tt> methods to the constructor and
-    # it'll have a crack at parsing it.
+    # Simply require the library and each entry from Net::FTP +list+, +ls+ or +dir+ methods will
+    # be parsed by the LIST parse as best it can.
     #
     # == Creation
-    # 
-    # Hand the constructor a line from the result of an FTP LIST command.
     #
-    #   require 'net/ftp'
+    # By requiring Net::FTP::List instances are created by calling any of Net::FTP's +list+, +ls+ or
+    # +dir+ metods. The +to_s+ method still returns the raw line so for the most part this should be
+    # transparent.
+    #
+    #   require 'net/ftp' # Not really required but I like to list dependencies sometimes.
     #   require 'net/ftp/list'
     #
     #   ftp = Net::FTP.open('somehost.com', 'user', 'pass')
-    #   ftp.list('/some/path').each do |l|
-    #     # Parse list line. Continue if it can't be parsed.
-    #     list = Net::FTP::List.new(l) rescue next
-    #     puts list.name
+    #   ftp.list('/some/path') do |entry|
+    #     # Ignore everything that's not a file (so symlinks, directories and devices etc.)
+    #     next unless entry.file?
+    #
+    #     # If entry isn't a kind_of Net::FTP::List::Unknown then there is a bug in Net::FTP::List if this isn't the
+    #     # same name as ftp.nlist('/some/path') would have returned.
+    #     puts entry.basename
     #   end
     #
     # == Exceptions
     #
-    # +RuntimeError+ -- For the time being the only error emitted is a run time error when the line cannot be parsed.
-    # This isn't necessarily bad as some lines should be ignored like totals, blank lines and other random human
-    # friendly cruft you get from the LIST command.
-    class List
-      
-      # TODO: More rubyish aliases.
-      # Perhaps a mixin so for Net::FTP's to return List objects for list, ls and dir.
-      
-      # The name of the file entry. This is the same name that NLST would return except in the case of symlinks where
-      # you will get name as read back by the LIST command (normally in the form of <tt>source -> target</tt>).
-      alias_method :basename, :name
+    # None at this time. At worst you'll end up with an Net::FTP::List::Unknown instance which won't have any extra
+    # useful information. Methods like <tt>dir?</tt>, <tt>file?</tt> and <tt>symlink?</tt> will all return +false+.
+    module List
+      class << self
 
-      # The entry looks like a file. Try to RETR.
-      def file?
-        flagtryretr == 1
-      end
+        # Parse a raw FTP LIST line.
+        #
+        #   Net::FTP::List.parse(raw_list_string) # => Net::FTP::List::Parser instance.
+        def parse(raw)
+          Parser.parse(raw)
+        end
 
-      # The entry looks like a directory. Try to CWD.
-      def dir?
-        flagtrycwd == 1
-      end
+        # Parse a raw FTP LIST line.
+        #
+        # An alias for +parse+.
+        alias_method :new, :parse
 
-      # The entry looks like a symlink. dir? and file? will also return true for a symlink.
-      def symlink?
-        dir? && file?
       end
     end
+
   end
 end

@@ -9,35 +9,22 @@ class TestNetFTPList < Test::Unit::TestCase
   end
 
   def test_parse_new
-    assert_instance_of Net::FTP::List, @dir, 'LIST unixish directory'
-    assert_instance_of Net::FTP::List, @file, 'LIST unixish file'
+    assert_instance_of Net::FTP::List::Unix, @dir, 'LIST unixish directory'
+    assert_instance_of Net::FTP::List::Unix, @file, 'LIST unixish file'
   end
 
   def test_rubbish_lines
-    assert_raise RuntimeError do
-      Net::FTP::List.new("++ bah! ++")
-      Net::FTP::List.new("drwxr-x--x   5 sstest   pg544526     4096 Dec 10 20:22 .")
-    end
-  end
-
-  def test_ext_unix_like_dir
-    assert_equal @dir.name, 'etc'
-    assert_equal @dir.flagtrycwd, 1
-    assert_equal @dir.flagtryretr, 0
+    assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.new("++ bah! ++")
   end
 
   def test_ruby_unix_like_dir
+    assert_equal 'etc', @dir.basename
     assert @dir.dir?
     assert !@dir.file?
   end
 
-  def test_ext_unix_like_file
-    assert_equal @file.name, 'README'
-    assert_equal @file.flagtrycwd, 0
-    assert_equal @file.flagtryretr, 1
-  end
-
   def test_ruby_unix_like_file
+    assert_equal 'README', @file.basename
     assert @file.file?
     assert !@file.dir?
   end

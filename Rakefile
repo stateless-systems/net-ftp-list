@@ -5,10 +5,10 @@ require 'rake/gempackagetask'
 require 'rake/testtask'
 
 NAME = 'net-ftp-list'
-VERS = '0.2'
+VERS = '0.3'
 
 CLEAN.include ['**/*.log', '*.gem']
-CLOBBER.include ['**/*.log', '**/*.o', '**/Makefile', '**/*.bundle']
+CLOBBER.include ['**/*.log']
 
 spec = Gem::Specification.new do |s|
   s.name             = NAME
@@ -19,12 +19,11 @@ spec = Gem::Specification.new do |s|
   s.summary          = 'Parse FTP LIST command output.'
   s.description      = s.summary
   s.author           = 'Shane Hanna'
-  s.email            = 'shane.hanna@gmail.com'
-  s.homepage         = 'TODO'
+  s.email            = 'shane@statelesssystems.com'
+  s.homepage         = 'http://statelesssystems.com'
 
-  s.files            = FileList['Rakefile', '**/*.{rb,txt,c,h}'].to_a
+  s.files            = FileList['Rakefile', '**/*.{rb,txt}'].to_a
   s.test_files       = FileList['tests/*.rb'].to_a
-  s.extensions       = FileList['ext/extconf.rb'].to_a
 end
 
 desc 'Default: Run unit tests.'
@@ -35,16 +34,8 @@ Rake::GemPackageTask.new(spec) do |p|
     p.gem_spec = spec
 end
 
-desc 'Build the C extension.'
-task :ext do
-  cd 'ext'
-  sh %q{ruby extconf.rb && make}
-  cd '..'
-end
-
 desc 'Run the unit tests.'
-Rake::TestTask.new(:test => :ext) do |t|
-  t.libs << 'ext'
+Rake::TestTask.new do |t|
   t.verbose = true
 end
 
