@@ -61,13 +61,14 @@ module Net
           #
           # TODO: Having a class be both factory and abstract implementation seems a little nutty to me. If it ends up
           # too confusing or gives anyone the shits I'll move it.
-          def inherited(klass)
+          def inherited(klass) #:nodoc:
             @@parsers << klass
           end
 
           # Factory method.
           #
-          # Attempt to find and parse a list item with the a parser.
+          # Attempt to find a parser and parse a list item. At worst the item will return an Net::FTP::List::Unknown
+          # instance. This may change in the future so that only parsable entries are kept.
           def parse(raw)
             @@parsers.reverse.each do |parser|
               begin

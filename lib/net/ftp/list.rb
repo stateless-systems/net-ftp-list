@@ -35,7 +35,7 @@ module Net #:nodoc:
     # useful information. Methods like <tt>dir?</tt>, <tt>file?</tt> and <tt>symlink?</tt> will all return +false+.
     module List
 
-      def self.extended(klass)
+      def self.extended(klass) #:nodoc:
         class << klass
   
           alias_method :raw_list, :list
