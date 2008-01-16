@@ -21,20 +21,14 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
 * The factory and abstract base class for parsers are one and the same. OO geeks will cry.
 * More OS's and server types. Only servers that return Unix like LIST responses will work at the moment.
 * Calling <tt>if entry.file? or entry.dir?</tt> is hard work when you really mean <tt>unless entry.unknown?</tt>
-* I'm not sure about overwriting Net::FTP's +list+, +ls+ and +dir+. It's a base lib after all and people will be
-  expecting String. Perhaps I'd be better to <tt>class Parser < String</tt> for the abstract parser.
-* The block handling for +list+, +ls+ and +dir+ has a nasty +map+ that's essentially building up an unused Array.
 
 == SYNOPSIS
-
-By requiring Net::FTP::List instances are created by calling any of Net::FTP's <tt>list</tt>, <tt>ls</tt> or
-<tt>dir</tt> metods. The <tt>to_s</tt> method still returns the raw line so for the most part this should be
-transparent.
 
   require 'net/ftp' # Not really required but I like to list dependencies sometimes.
   require 'net/ftp/list'
 
   ftp = Net::FTP.open('somehost.com', 'user', 'pass')
+  ftp.extend Net::FTP::List # Tweak list, ls and dir to returned parsed content.
   ftp.list('/some/path') do |entry|
     # Ignore everything that's not a file (so symlinks, directories and devices etc.)
     next unless entry.file?
