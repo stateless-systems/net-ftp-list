@@ -36,18 +36,22 @@ module Net #:nodoc:
     module List
 
       def self.extended(klass)
-        alias_method :raw_list, :list
-        def list(*args, &block)
-          if block
-            raw_list(*args) do |raw|
-              Net::FTP::List::Parser.parse(raw)
-              yield raw
-            end
-          else
-            raw_list(*args).map do |raw|
-              Net::FTP::List::Parser.parse(raw)
+        class << klass
+  
+          alias_method :raw_list, :list
+          def list(*args, &block)
+            if block
+              raw_list(*args) do |raw|
+                Net::FTP::List::Parser.parse(raw)
+                yield raw
+              end
+            else
+              raw_list(*args).map do |raw|
+                Net::FTP::List::Parser.parse(raw)
+              end
             end
           end
+
         end
       end
 
