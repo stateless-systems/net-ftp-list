@@ -41,17 +41,19 @@ module Net #:nodoc:
           alias_method :raw_list, :list
           def list(*args, &block)
             if block
-              raw_list(*args) do |raw|
-                Net::FTP::List::Parser.parse(raw)
-                yield raw
-              end
+              raw_list(*args){|raw| yield parse_list_entry(raw)}
             else
-              raw_list(*args).map do |raw|
-                Net::FTP::List::Parser.parse(raw)
-              end
+              raw_list(*args).map{|raw| parse_list_entry(raw)}
             end
           end
 
+          protected
+            # Call the parse with a raw list entry.
+            #
+            # Handy because it saves you aliasing list() yet again to modify individual entries.
+            def parse_list_entry(raw) #:nodoc:
+              Net::FTP::List::Parser.parse(raw)
+            end
         end
       end
 
