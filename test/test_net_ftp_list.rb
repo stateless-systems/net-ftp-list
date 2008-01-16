@@ -4,8 +4,8 @@ require 'net/ftp/list'
 class TestNetFTPList < Test::Unit::TestCase
 
   def setup
-    @dir  = Net::FTP::List.new('drwxr-xr-x   4 user     group       4096 Dec 10 20:23 etc')
-    @file = Net::FTP::List.new('-rw-r--r--   1 root     other        531 Jan 29 03:26 README')
+    @dir  = Net::FTP::List::Parser.parse('drwxr-xr-x   4 user     group       4096 Dec 10 20:23 etc')
+    @file = Net::FTP::List::Parser.parse('-rw-r--r--   1 root     other        531 Jan 29 03:26 README')
   end
 
   def test_parse_new
@@ -14,7 +14,7 @@ class TestNetFTPList < Test::Unit::TestCase
   end
 
   def test_rubbish_lines
-    assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.new("++ bah! ++")
+    assert_instance_of Net::FTP::List::Unknown, Net::FTP::List::Parser.parse("++ bah! ++")
   end
 
   def test_ruby_unix_like_dir

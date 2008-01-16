@@ -38,16 +38,16 @@ module Net
           match = REGEXP.match(raw.strip) or raise ParserError
 
           case match[1]
-            when /d/    then self.dir = true
-            when /l/    then self.symlink = true
-            when /[f-]/ then self.file = true
+            when /d/    then @dir = true
+            when /l/    then @symlink = true
+            when /[f-]/ then @file = true
             when /[bc]/ then # Do nothing with devices for now.
             else ParserError 'Unknown LIST entry type.'
           end
 
           # TODO: Permissions, users, groups, date/time.
 
-          self.basename = match[21].match(/^(.+)(?:\s+\->.+)?$/)[0].strip
+          @basename = match[21].match(/^(.+)(?:\s+\->.+)?$/)[0].strip
         end
       end
 

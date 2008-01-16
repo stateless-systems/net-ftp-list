@@ -21,44 +21,42 @@ module Net
       class Parser
         @@parsers = []
 
-        # The raw list entry string.
-        attr_reader :raw
-
-        # The items basename (filename).
-        attr_reader :basename
-
-        # Looks like a directory, try CWD.
-        def dir?
-          !!self.dir
-        end
-
-        # Looks like a file, try RETR.
-        def file?
-          self.file
-        end
-
-        # Looks like a symbolic link.
-        def symlink?
-          !!self.symlink
-        end
-
         # Parse a raw FTP LIST line.
         #
         # By default just takes and set the raw list entry.
         #
         #   Net::FTP::List.parse(raw_list_string) # => Net::FTP::List::Parser instance.
         def initialize(raw)
-          self.raw = raw
+          @raw = raw
         end
 
-        # Stringify.
-        def to_s
-          raw
+        # The raw list entry string.
+        def raw
+          @raw
         end
-        alias_method :raw, :to_s
+        alias_method :to_s, :raw
+
+        # The items basename (filename).
+        def basename
+          @basename
+        end
+
+        # Looks like a directory, try CWD.
+        def dir?
+          !!@dir
+        end
+
+        # Looks like a file, try RETR.
+        def file?
+          !!@file
+        end
+
+        # Looks like a symbolic link.
+        def symlink?
+          !!@symlink
+        end
 
         class << self
-
           # Acts as a factory.
           #
           # TODO: Having a class be both factory and abstract implementation seems a little nutty to me. If it ends up
@@ -81,15 +79,6 @@ module Net
           end
         end
 
-        protected
-          # Protected boolean.
-          attr_accessor :file, :dir, :symlink
-
-          # Protected raw list entry string.
-          attr_writer :raw
-
-          # Protected item basename (filename).
-          attr_writer :basename
       end
 
       # Unknown parser.
