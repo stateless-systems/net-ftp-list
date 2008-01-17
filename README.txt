@@ -21,7 +21,6 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
 * The factory and abstract base class for parsers are one and the same. OO geeks will cry.
 * More OS's and server types. Only servers that return Unix like LIST responses will work at the moment.
 * Calling <tt>if entry.file? or entry.dir?</tt> is hard work when you really mean <tt>unless entry.unknown?</tt>
-* No unit tests for the Net::FTP stuff yet, just the parser.
 
 == SYNOPSIS
 
@@ -29,8 +28,9 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
   require 'net/ftp/list'
 
   ftp = Net::FTP.open('somehost.com', 'user', 'pass')
-  ftp.extend Net::FTP::List # Tweak list, ls and dir to returned parsed content.
-  ftp.list('/some/path') do |entry|
+  ftp.list('/some/path') do |e|
+    entry = Net::FTP::List.parse(e)
+    
     # Ignore everything that's not a file (so symlinks, directories and devices etc.)
     next unless entry.file?
 
