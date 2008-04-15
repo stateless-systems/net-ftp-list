@@ -4,6 +4,7 @@ require 'net/ftp/list/parser'
 # The order here is important for the time being. Corse grained parsers should appear before specializations because
 # the whole thing is searched in reverse order.
 require 'net/ftp/list/unix'
+require 'net/ftp/list/microsoft'
 
 module Net #:nodoc:
   class FTP #:nodoc:

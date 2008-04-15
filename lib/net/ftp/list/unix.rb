@@ -3,7 +3,7 @@ require 'net/ftp/list/parser'
 module Net
   class FTP
     module List
-      
+
       # Parse Unix like FTP LIST entries.
       #
       # == MATCHES
