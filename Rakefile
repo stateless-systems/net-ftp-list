@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
 require 'rake/testtask'
 
 NAME = 'net-ftp-list'
-VERS = '0.7'
+VERS = '0.8'
 
 CLEAN.include ['**/*.log', '*.gem']
 CLOBBER.include ['**/*.log']
@@ -42,7 +42,7 @@ end
 desc 'Package and install as gem.'
 task :install do
   sh %{rake package}
-  sh %{sudo gem install pkg/net-ftp-list-#{VERS}}
+  sh %{sudo gem install pkg/#{NAME}-#{VERS}}
 end
 
 desc 'Uninstall the gem.'

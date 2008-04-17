@@ -32,28 +32,28 @@ module Net
 
         # The raw list entry string.
         def raw
-          @raw
+          @raw ||= ''
         end
         alias_method :to_s, :raw
 
         # The items basename (filename).
         def basename
-          @basename
+          @basename ||= ''
         end
 
         # Looks like a directory, try CWD.
         def dir?
-          !!@dir
+          !!@dir ||= false
         end
 
         # Looks like a file, try RETR.
         def file?
-          !!@file
+          !!@file ||= false
         end
 
         # Looks like a symbolic link.
         def symlink?
-          !!@symlink
+          !!@symlink ||= false
         end
 
         class << self
