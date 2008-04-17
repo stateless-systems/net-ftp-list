@@ -4,7 +4,7 @@ module Net
   class FTP
     module List
 
-      # Parse M$ like FTP LIST entries.
+      # Parse Microsoft(NT) like FTP LIST entries.
       #
       # == MATCHES
       #
@@ -28,7 +28,7 @@ module Net
           \s*$
         }x
 
-        # Parse a M$ like FTP LIST entries.
+        # Parse a Microsoft(NT) like FTP LIST entries.
         def initialize(raw)
           super(raw)
           match = REGEXP.match(raw.strip) or raise ParserError
