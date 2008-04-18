@@ -20,13 +20,13 @@ module Net
 
         # Stolen straight from the ASF's commons Java FTP LIST parser library.
         # http://svn.apache.org/repos/asf/commons/proper/net/trunk/src/java/org/apache/commons/net/ftp/
-        REGEXP = %r{
+        REGEXP = %r!
           ^\s*
-          (\S+)\s+(\S+)\s+
+          ([0-9\-:\/]{5,})\s+([0-9\-:]{3,}(?:[aApP][mM])?)\s+
           (?:(<DIR>)|([0-9]+))\s+
           (\S.*)
           \s*$
-        }x
+        !x
 
         # Parse a Microsoft(NT) like FTP LIST entries.
         def initialize(raw)
