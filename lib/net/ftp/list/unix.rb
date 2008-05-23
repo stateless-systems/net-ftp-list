@@ -47,7 +47,13 @@ module Net
 
           # TODO: Permissions, users, groups, date/time.
 
-          @basename = match[21].match(/^(.+)(?:\s+\->.+)?$/)[0].strip
+          @basename = match[21].strip
+
+          # filenames with spaces will end up in the last match
+          @basename += match[22] unless match[22].nil?
+
+          # strip the symlink stuff we don't care about
+          @basename.sub!(/\s+\->.+$/, '') if @symlink
         end
       end
 
