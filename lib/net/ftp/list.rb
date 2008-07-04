@@ -5,6 +5,7 @@ require 'net/ftp/list/parser'
 # the whole thing is searched in reverse order.
 require 'net/ftp/list/unix'
 require 'net/ftp/list/microsoft'
+require 'net/ftp/list/netware'
 
 module Net #:nodoc:
   class FTP #:nodoc:
