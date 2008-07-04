@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
 require 'rake/testtask'
 
 NAME = 'net-ftp-list'
-VERS = '1.0'
+VERS = '2.0'
 
 CLEAN.include ['**/*.log', '*.gem']
 CLOBBER.include ['**/*.log']
