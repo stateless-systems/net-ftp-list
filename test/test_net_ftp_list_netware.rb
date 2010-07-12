@@ -17,6 +17,11 @@ class TestNetFTPListNetware < Test::Unit::TestCase
     assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.parse("++ bah! ++")
   end
 
+  def test_ruby_netware_mtime
+    assert_equal @dir.mtime, Time.parse('Jun 27 23:46')
+    assert_equal @file.mtime, Time.parse('Jun 22 06:22')
+  end
+  
   def test_ruby_netware_like_dir
     assert_equal 'public.www', @dir.basename
     assert @dir.dir?

@@ -1,3 +1,4 @@
+require 'time'
 require 'net/ftp/list/parser'
 
 module Net
@@ -36,7 +37,7 @@ module Net
         def initialize(raw)
           super(raw)
           match = REGEXP.match(raw.strip) or raise ParserError
-
+          
           case match[1]
             when /d/    then @dir = true
             when /l/    then @symlink = true
@@ -46,6 +47,7 @@ module Net
           end
 
           # TODO: Permissions, users, groups, date/time.
+          @mtime = Time.parse("#{match[19]} #{match[20]}")
 
           @basename = match[21].strip
 

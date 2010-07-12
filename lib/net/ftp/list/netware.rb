@@ -1,4 +1,5 @@
 require 'net/ftp/list/parser'
+require 'time'
 
 module Net
   class FTP
@@ -32,6 +33,8 @@ module Net
         def initialize(raw)
           super(raw)
           match = REGEXP.match(raw.strip) or raise ParserError
+          
+          @mtime = Time.parse(match[5])
 
           if match[1] == 'd'
             @dir = true

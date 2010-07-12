@@ -55,6 +55,10 @@ module Net
         def symlink?
           !!@symlink ||= false
         end
+        
+        def mtime
+          @mtime
+        end
 
         class << self
           # Acts as a factory.

@@ -17,6 +17,11 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
   def test_rubbish_lines
     assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.parse("++ bah! ++")
   end
+  
+  def test_ruby_micrsoft_mtime
+    assert_equal DateTime.strptime('06-25-07  01:08PM', "%m-%d-%y  %I:%M%p"), @dir.mtime
+    assert_equal DateTime.strptime('11-27-07  08:45PM', "%m-%d-%y  %I:%M%p"), @file.mtime
+  end
 
   def test_ruby_microsoft_like_dir
     assert_equal 'etc', @dir.basename
