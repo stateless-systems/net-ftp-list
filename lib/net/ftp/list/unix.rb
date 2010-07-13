@@ -37,7 +37,7 @@ module Net
         def initialize(raw)
           super(raw)
           match = REGEXP.match(raw.strip) or raise ParserError
-          
+
           case match[1]
             when /d/    then @dir = true
             when /l/    then @symlink = true

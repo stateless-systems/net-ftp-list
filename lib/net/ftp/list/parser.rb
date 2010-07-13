@@ -55,7 +55,7 @@ module Net
         def symlink?
           !!@symlink ||= false
         end
-        
+
         def mtime
           @mtime
         end

@@ -33,7 +33,7 @@ module Net
         def initialize(raw)
           super(raw)
           match = REGEXP.match(raw.strip) or raise ParserError
-          
+
           @mtime = DateTime.strptime("#{match[1]} #{match[2]}", "%m-%d-%y  %I:%M%p")
 
           if match[3] == '<DIR>'
