@@ -23,7 +23,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   def test_rubbish_lines
     assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.parse("++ bah! ++")
   end
-  
+
   def test_ruby_unix_like_date
     assert_equal Time.parse("Mar 11 07:57"), @other_dir.mtime
     assert_equal Time.parse("Apr 30 15:26"), @symlink.mtime
@@ -59,4 +59,16 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     assert !@file.dir?
   end
 
+  def test_filesize
+    {
+      @dir  => 4096,
+      @file => 531,
+      @other_dir => 4096,
+      @spaces => 72,
+      @symlink => 4,
+      @older_date => 154112,
+    }.each do |filesys_obj,size|
+      assert_equal size, filesys_obj.filesize
+    end
+  end
 end

@@ -8,7 +8,7 @@ module Net
       # Parse Unix like FTP LIST entries.
       #
       # == MATCHES
-      # 
+      #
       #   drwxr-xr-x   4 steve    group       4096 Dec 10 20:23 etc
       #   -rw-r--r--   1 root     other        531 Jan 29 03:26 README.txt
       #
@@ -47,6 +47,7 @@ module Net
           end
 
           # TODO: Permissions, users, groups, date/time.
+          @filesize = match[18].to_i
           @mtime = Time.parse("#{match[19]} #{match[20]}")
 
           @basename = match[21].strip

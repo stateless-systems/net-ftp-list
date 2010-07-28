@@ -35,6 +35,7 @@ module Net
           match = REGEXP.match(raw.strip) or raise ParserError
 
           @mtime = Time.parse(match[5])
+          @filesize = match[4].to_i
 
           if match[1] == 'd'
             @dir = true
