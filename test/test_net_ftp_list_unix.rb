@@ -60,15 +60,11 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   end
 
   def test_filesize
-    {
-      @dir  => 4096,
-      @file => 531,
-      @other_dir => 4096,
-      @spaces => 72,
-      @symlink => 4,
-      @older_date => 154112,
-    }.each do |filesys_obj,size|
-      assert_equal size, filesys_obj.filesize
-    end
+    assert_equal 4096, @dir.filesize
+    assert_equal 531, @file.filesize
+    assert_equal 4096, @other_dir.filesize
+    assert_equal 72, @spaces.filesize
+    assert_equal 4, @symlink.filesize
+    assert_equal 154112, @older_date.filesize
   end
 end

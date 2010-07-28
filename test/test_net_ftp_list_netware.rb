@@ -35,12 +35,8 @@ class TestNetFTPListNetware < Test::Unit::TestCase
   end
 
   def test_filesize
-    {
-            @dir  => 512,
-            @file => 2767
-    }.each do |filesys_obj,size|
-      assert_equal size, filesys_obj.filesize
-    end
+    assert_equal 512, @dir.filesize
+    assert_equal 2767, @file.filesize
   end
 
 end

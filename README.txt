@@ -39,7 +39,6 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
     # Format the entry showing its file size and modification time
     puts "#{entry.basename}, #{entry.filesize}, #{entry.mtime}"
 
-    # output the modification time and the
   end
 
 == CREDITS
