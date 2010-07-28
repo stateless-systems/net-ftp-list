@@ -17,8 +17,8 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
   def test_rubbish_lines
     assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.parse("++ bah! ++")
   end
-  
-  def test_ruby_micrsoft_mtime
+
+  def test_ruby_microsoft_mtime
     assert_equal DateTime.strptime('06-25-07  01:08PM', "%m-%d-%y  %I:%M%p"), @dir.mtime
     assert_equal DateTime.strptime('11-27-07  08:45PM', "%m-%d-%y  %I:%M%p"), @file.mtime
   end
@@ -35,4 +35,8 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
     assert !@file.dir?
   end
 
+  def test_filesize
+    assert @dir.filesize.nil?
+    assert_equal 23437, @file.filesize
+  end
 end

@@ -39,6 +39,7 @@ module Net
           if match[3] == '<DIR>'
             @dir = true
           else
+            @filesize = match[4].to_i
             @file = true
           end
 

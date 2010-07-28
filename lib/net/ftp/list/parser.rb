@@ -43,21 +43,25 @@ module Net
 
         # Looks like a directory, try CWD.
         def dir?
-          !!@dir ||= false
+          !!(@dir ||= false)
         end
 
         # Looks like a file, try RETR.
         def file?
-          !!@file ||= false
+          !!(@file ||= false)
         end
 
         # Looks like a symbolic link.
         def symlink?
-          !!@symlink ||= false
+          !!(@symlink ||= false)
         end
 
         def mtime
           @mtime
+        end
+
+        def filesize
+          @filesize
         end
 
         class << self

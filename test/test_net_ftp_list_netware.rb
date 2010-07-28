@@ -21,7 +21,7 @@ class TestNetFTPListNetware < Test::Unit::TestCase
     assert_equal @dir.mtime, Time.parse('Jun 27 23:46')
     assert_equal @file.mtime, Time.parse('Jun 22 06:22')
   end
-  
+
   def test_ruby_netware_like_dir
     assert_equal 'public.www', @dir.basename
     assert @dir.dir?
@@ -32,6 +32,15 @@ class TestNetFTPListNetware < Test::Unit::TestCase
     assert_equal 'about.html', @file.basename
     assert @file.file?
     assert !@file.dir?
+  end
+
+  def test_filesize
+    {
+            @dir  => 512,
+            @file => 2767
+    }.each do |filesys_obj,size|
+      assert_equal size, filesys_obj.filesize
+    end
   end
 
 end
