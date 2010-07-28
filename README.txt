@@ -30,13 +30,16 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
   ftp = Net::FTP.open('somehost.com', 'user', 'pass')
   ftp.list('/some/path') do |e|
     entry = Net::FTP::List.parse(e)
-    
+
     # Ignore everything that's not a file (so symlinks, directories and devices etc.)
     next unless entry.file?
 
     # If entry isn't a kind_of Net::FTP::List::Unknown then there is a bug in Net::FTP::List if this isn't the
     # same name as ftp.nlist('/some/path') would have returned.
-    puts entry.basename
+    # Format the entry showing its file size and modification time
+    puts "#{entry.basename}, #{entry.filesize}, #{entry.mtime}"
+
+    # output the modification time and the
   end
 
 == CREDITS
