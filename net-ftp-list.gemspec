@@ -23,11 +23,13 @@ Gem::Specification.new do |s|
      "lib/net/ftp/list/microsoft.rb",
      "lib/net/ftp/list/netware.rb",
      "lib/net/ftp/list/parser.rb",
+     "lib/net/ftp/list/rumpus.rb",
      "lib/net/ftp/list/unix.rb",
      "net-ftp-list.gemspec",
      "test/test_net_ftp_list_microsoft.rb",
      "test/test_net_ftp_list_netware.rb",
-     "test/test_net_ftp_list_unix.rb"
+     "test/test_net_ftp_list_rumpus.rb",
+     "test/test_net_ftp_list_unix.rb",
   ]
   s.homepage = %q{http://github.com/stateless-systems/net-ftp-list}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -35,7 +37,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Parse FTP LIST command output.}
   s.test_files = [
-    "test/test_net_ftp_list_microsoft.rb",
+     "test/test_net_ftp_list_microsoft.rb",
      "test/test_net_ftp_list_unix.rb",
      "test/test_net_ftp_list_netware.rb"
   ]

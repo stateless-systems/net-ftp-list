@@ -6,6 +6,7 @@ require 'net/ftp/list/parser'
 require 'net/ftp/list/unix'
 require 'net/ftp/list/microsoft'
 require 'net/ftp/list/netware'
+require 'net/ftp/list/rumpus'
 
 module Net #:nodoc:
   class FTP #:nodoc:
