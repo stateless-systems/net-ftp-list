@@ -9,8 +9,8 @@ class TestNetFTPListRumpus < Test::Unit::TestCase
   end
   
   def test_parsed
-    assert_instance_of Net::FTP::List::Rumpus, @dir, 'LIST Rumpus directory'
-    assert_instance_of Net::FTP::List::Rumpus, @file, 'LIST Rumpus file with spaces'
+    assert_equal "Rumpus", @dir.server_type, 'LIST Rumpus directory'
+    assert_equal "Rumpus", @file.server_type, 'LIST Rumpus file with spaces'
   end
   
   def test_ruby_unix_like_date
