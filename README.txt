@@ -17,7 +17,6 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
 
 == TODO & PROBLEMS
 
-* I'm new to Ruby, I'm sure some exist :)
 * The factory and abstract base class for parsers are one and the same. OO geeks will cry.
 * More OS's and server types. Only servers that return Unix like LIST responses will work at the moment.
 * Calling <tt>if entry.file? or entry.dir?</tt> is hard work when you really mean <tt>unless entry.unknown?</tt>
@@ -34,7 +33,7 @@ See the RFC for more guff on LIST and NLST: http://www.ietf.org/rfc/rfc0959.txt
     # Ignore everything that's not a file (so symlinks, directories and devices etc.)
     next unless entry.file?
 
-    # If entry isn't a kind_of Net::FTP::List::Unknown then there is a bug in Net::FTP::List if this isn't the
+    # If entry isn't entry.unknown? then there is a bug in Net::FTP::List if this isn't the
     # same name as ftp.nlist('/some/path') would have returned.
     # Format the entry showing its file size and modification time
     puts "#{entry.basename}, #{entry.filesize}, #{entry.mtime}"

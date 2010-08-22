@@ -9,12 +9,8 @@ class TestNetFTPListNetware < Test::Unit::TestCase
   end
 
   def test_parse_new
-    assert_instance_of Net::FTP::List::Netware, @dir, 'LIST Netware directory'
-    assert_instance_of Net::FTP::List::Netware, @file, 'LIST Netware file'
-  end
-
-  def test_rubbish_lines
-    assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.parse("++ bah! ++")
+    assert_equal "Netware", @dir.server_type, 'LIST Netware directory'
+    assert_equal "Netware", @file.server_type, 'LIST Netware file'
   end
 
   def test_ruby_netware_mtime
