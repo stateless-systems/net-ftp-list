@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{net-ftp-list}
-  s.version = "3.0.0"
+  s.version = "3.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stateless Systems"]
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
      "lib/net/ftp/list/parser.rb",
      "lib/net/ftp/list/rumpus.rb",
      "lib/net/ftp/list/unix.rb",
+     "lib/net/ftp/list/unknown.rb",
      "net-ftp-list.gemspec",
      "test/test_net_ftp_list.rb",
      "test/test_net_ftp_list_entry.rb",
