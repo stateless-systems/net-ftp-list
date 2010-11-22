@@ -10,6 +10,7 @@ module Net::FTP::List
   require 'net/ftp/list/microsoft'
   require 'net/ftp/list/netware'
   require 'net/ftp/list/rumpus'
+  require 'net/ftp/list/unknown'
 
   def self.raise_on_failed_server_detection=(new_flag)
     Thread.current[:net_ftp_list_raise_on_failed_server_detection] = !!new_flag
