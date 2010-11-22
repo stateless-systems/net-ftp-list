@@ -1,7 +1,7 @@
 # Represents an entry of the FTP list. Gets returned when you parse a list.
 class Net::FTP::List::Entry
 
-  ALLOWED_ATTRIBUTES = [:raw, :basename, :dir, :file, :symlink, :mtime, :filesize, :server_type] #:nodoc:
+  ALLOWED_ATTRIBUTES = [:raw, :basename, :dir, :file, :symlink, :mtime, :filesize, :device, :server_type] #:nodoc:
 
   # Create a new entry object. The additional argument is the list of metadata keys
   # that can be used on the object. By default just takes and set the raw list entry.
@@ -38,6 +38,10 @@ class Net::FTP::List::Entry
   # Looks like a symbolic link.
   def symlink?
     !!(@symlink ||= false)
+  end
+
+  def device?
+    !!(@device ||= false)
   end
 
   # Returns the modification time of the file/directory or the current time if unknown

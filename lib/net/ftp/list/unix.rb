@@ -17,6 +17,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     (\d+)\s+
     (\S+)\s+
     (?:(\S+(?:\s\S+)*)\s+)?
+    (?:\d+,\s+)?
     (\d+)\s+
     ((?:\d+[-/]\d+[-/]\d+)|(?:\S+\s+\S+))\s+
     (\d+(?::\d+)?)\s+
@@ -27,12 +28,12 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
   def self.parse(raw)
     match = REGEXP.match(raw.strip) or return false
 
-    dir, symlink, file = false, false, false
+    dir, symlink, file, device = false, false, false, false
     case match[1]
-      when /d/    then dir = true
-      when /l/    then symlink = true
-      when /[f-]/ then file = true
-      when /[bc]/ then # Do nothing with devices for now.
+      when /d/     then dir = true
+      when /l/     then symlink = true
+      when /[f-]/  then file = true
+      when /[sbc]/ then device = true
       else raise Net::FTP::List::ParseError.new('Unknown LIST entry type.')
     end
 
@@ -52,6 +53,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
       raw,
       :dir => dir,
       :file => file,
+      :device => device,
       :symlink => symlink,
       :filesize => filesize,
       :basename => basename,
