@@ -4,7 +4,7 @@ require 'net/ftp/list'
 class TestNetFTPList < Test::Unit::TestCase
 
   def test_all
-    one = Net::FTP::List.parse("drwxr-xr-x               folder        0 Nov 30 10:03 houdini")
+    one = Net::FTP::List.parse('drwxr-xr-x 4 user     group    4096 Dec 10 20:23 etc')
     assert_kind_of Net::FTP::List::Entry, one
     assert one.dir?
     assert !one.file?

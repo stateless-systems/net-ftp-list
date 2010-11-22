@@ -13,6 +13,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     @block_dev = Net::FTP::List.parse  'brw-r----- 1 root     disk   1,   0 Apr 13  2006 ram0' rescue nil
     @char_dev  = Net::FTP::List.parse  'crw-rw-rw- 1 root     root   1,   3 Apr 13  2006 null' rescue nil
     @socket_dev = Net::FTP::List.parse 'srw-rw-rw- 1 root     root        0 Aug 20 14:15 log' rescue nil
+    @pipe_dev = Net::FTP::List.parse   'prw-r----- 1 root     adm         0 Nov 22 10:30 xconsole' rescue nil
   end
 
   def test_parse_new
@@ -24,6 +25,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     assert_equal "Unix", @block_dev.server_type, 'LIST unix block device'
     assert_equal "Unix", @char_dev.server_type, 'LIST unix char device'
     assert_equal "Unix", @socket_dev.server_type, 'LIST unix socket device'
+    assert_equal "Unix", @pipe_dev.server_type, 'LIST unix socket device'
   end
 
   def test_ruby_unix_like_date
@@ -83,5 +85,10 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   def test_unix_socket_device
     assert_equal 'log', @socket_dev.basename
     assert @socket_dev.device?
+  end
+
+  def test_unix_pipe_device
+    assert_equal 'xconsole', @pipe_dev.basename
+    assert @pipe_dev.device?
   end
 end

@@ -12,7 +12,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
   # Stolen straight from the ASF's commons Java FTP LIST parser library.
   # http://svn.apache.org/repos/asf/commons/proper/net/trunk/src/java/org/apache/commons/net/ftp/
   REGEXP = %r{
-    ([bcdlfmpSs-])
+    ([pbcdlfmpSs-])
     (((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-])))\+?\s+
     (\d+)\s+
     (\S+)\s+
@@ -30,12 +30,12 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
 
     dir, symlink, file, device = false, false, false, false
     case match[1]
-      when /d/     then dir = true
-      when /l/     then symlink = true
-      when /[f-]/  then file = true
-      when /[sbc]/ then device = true
-      else raise Net::FTP::List::ParseError.new('Unknown LIST entry type.')
+      when /d/      then dir = true
+      when /l/      then symlink = true
+      when /[f-]/   then file = true
+      when /[psbc]/ then device = true
     end
+    return false unless dir or symlink or file or device
 
     # TODO: Permissions, users, groups, date/time.
     filesize = match[18].to_i
