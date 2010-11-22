@@ -11,7 +11,7 @@ class Net::FTP::List::Parser
 
   # Automatically add an inheriting parser to the list of known parsers.
   def self.inherited(klass) #:nodoc:
-    @@parsers.unshift(klass)
+    @@parsers.push(klass)
   end
 
   # The main parse method. Return false from it if parsing fails (this is cheaper than raising an exception)
