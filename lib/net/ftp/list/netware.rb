@@ -16,13 +16,13 @@ class Net::FTP::List::Netware < Net::FTP::List::Parser
     (\S+\s+\S+\s+((\d+:\d+)|(\d{4})))
     \s+(.*)
   $!x
-  
+
   # Parse a Netware like FTP LIST entries.
   def self.parse(raw)
     match = REGEXP.match(raw.strip) or return false
-    
+
     is_dir = match[1] == 'd'
-    
+
     emit_entry(
       raw,
       :mtime => Time.parse(match[5]),

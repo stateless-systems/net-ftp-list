@@ -12,22 +12,22 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
     assert_equal "Microsoft", @dir.server_type, 'LIST M$ directory'
     assert_equal "Microsoft", @file.server_type, 'LIST M$ directory'
   end
-  
+
   def test_rubbish_lines
     assert_instance_of Net::FTP::List::Entry, Net::FTP::List.parse("++ bah! ++")
   end
-  
+
   def test_ruby_microsoft_mtime
     assert_equal DateTime.strptime('06-25-07  01:08PM', "%m-%d-%y  %I:%M%p"), @dir.mtime
     assert_equal DateTime.strptime('11-27-07  08:45PM', "%m-%d-%y  %I:%M%p"), @file.mtime
   end
-  
+
   def test_ruby_microsoft_like_dir
     assert_equal 'etc', @dir.basename
     assert @dir.dir?
     assert !@dir.file?
   end
-  
+
   def test_ruby_microsoft_like_file
     assert_equal 'README.TXT', @file.basename
     assert @file.file?

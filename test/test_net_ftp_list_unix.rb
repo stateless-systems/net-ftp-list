@@ -19,36 +19,36 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     assert_equal "Unix", @spaces.server_type, 'LIST unixish directory with spaces'
     assert_equal "Unix", @symlink.server_type, 'LIST unixish symlink'
   end
-  
+
   def test_ruby_unix_like_date
     assert_equal Time.parse("Mar 11 07:57"), @other_dir.mtime
     assert_equal Time.parse("Apr 30 15:26"), @symlink.mtime
     assert_equal Time.parse("Feb 15  2008"), @older_date.mtime
   end
-  
+
   def test_ruby_unix_like_dir
     assert_equal 'etc', @dir.basename
     assert @dir.dir?
     assert !@dir.file?
-    
+
     assert_equal 'forums', @other_dir.basename
     assert @other_dir.dir?
     assert !@other_dir.file?
   end
-  
+
   def test_ruby_unix_like_symlink
     assert_equal 'bar', @symlink.basename
     assert @symlink.symlink?
     assert !@symlink.dir?
     assert !@symlink.file?
   end
-  
+
   def test_spaces_in_unix_dir
     assert_equal 'spaces suck', @spaces.basename
     assert @spaces.dir?
     assert !@spaces.file?
   end
-  
+
   def test_ruby_unix_like_file
     assert_equal 'README', @file.basename
     assert @file.file?

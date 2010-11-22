@@ -8,13 +8,13 @@ class TestNetFTPList < Test::Unit::TestCase
     assert_kind_of Net::FTP::List::Entry, one
     assert one.dir?
     assert !one.file?
-    
+
     two = Net::FTP::List.parse("++ unknown garbage +++")
     assert_kind_of Net::FTP::List::Entry, two
     assert two.unknown?
     assert_equal '', two.basename
   end
-  
+
   def test_raise_when_flag_set
     Net::FTP::List.raise_on_failed_server_detection = true
     assert_raise(Net::FTP::List::ParseError) do

@@ -21,11 +21,11 @@ class Net::FTP::List::Microsoft < Net::FTP::List::Parser
   # Parse a Microsoft(NT) like FTP LIST entries.
   def self.parse(raw)
     match = REGEXP.match(raw.strip) or return false
-    
+
     mtime = DateTime.strptime("#{match[1]} #{match[2]}", "%m-%d-%y  %I:%M%p")
     is_dir = match[3] == '<DIR>'
     filesize = is_dir ? 0 : match[4].to_i
-    
+
     emit_entry(
       raw,
       :dir => is_dir,
