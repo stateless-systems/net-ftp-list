@@ -33,7 +33,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
       when /l/    then symlink = true
       when /[f-]/ then file = true
       when /[bc]/ then # Do nothing with devices for now.
-      else ParserError 'Unknown LIST entry type.'
+      else raise Net::FTP::List::ParseError.new('Unknown LIST entry type.')
     end
 
     # TODO: Permissions, users, groups, date/time.
