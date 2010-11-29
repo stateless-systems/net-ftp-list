@@ -38,4 +38,9 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
     assert_equal 0, @dir.filesize
     assert_equal 23437, @file.filesize
   end
+
+  def test_zero_hour
+    file = Net::FTP::List.parse('10-15-09  00:34AM       <DIR>          aspnet_client')
+    assert_equal 1255566840.to_s, file.mtime.strftime('%s')
+  end
 end
