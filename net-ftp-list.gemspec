@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{net-ftp-list}
-  s.version = "3.1.0"
+  s.version = "3.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stateless Systems"]
-  s.date = %q{2010-11-22}
+  s.date = %q{2010-11-29}
   s.email = %q{enquiries@statelesssystems.com}
   s.extra_rdoc_files = [
     "README.txt"
