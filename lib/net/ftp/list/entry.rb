@@ -24,11 +24,13 @@ class Net::FTP::List::Entry
   def basename
     @basename ||= ''
   end
+  alias name basename
 
   # Looks like a directory, try CWD.
   def dir?
     !!(@dir ||= false)
   end
+  alias directory? dir?
 
   # Looks like a file, try RETR.
   def file?
@@ -54,6 +56,7 @@ class Net::FTP::List::Entry
   def filesize
     @filesize || 0
   end
+  alias size filesize
 
   # Returns the detected server type if this entry
   def server_type

@@ -10,9 +10,12 @@ class TestNetFTPEntry < Test::Unit::TestCase
   def test_default_values
     e = Net::FTP::List::Entry.new('')
     assert_equal 0, e.filesize
+    assert_equal 0, e.size
     assert_equal '', e.basename
+    assert_equal '', e.name
     assert e.unknown?
     assert !e.dir?
+    assert !e.directory?
     assert !e.file?
     assert !e.symlink?
     assert_kind_of Time, e.mtime
