@@ -4,18 +4,17 @@ require 'net/ftp/list'
 class TestNetFTPListMicrosoft < Test::Unit::TestCase
 
   def setup
-    #                             DATE      TIME          DIR      SIZE  NAME
     @dir  = Net::FTP::List.parse('06-25-07  01:08PM       <DIR>          etc')
     @file = Net::FTP::List.parse('11-27-07  08:45PM                23437 README.TXT')
   end
 
   def test_parse_new
-    assert_instance_of Net::FTP::List::Microsoft, @dir, 'LIST M$ directory'
-    assert_instance_of Net::FTP::List::Microsoft, @file, 'LIST M$ file'
+    assert_equal "Microsoft", @dir.server_type, 'LIST M$ directory'
+    assert_equal "Microsoft", @file.server_type, 'LIST M$ directory'
   end
 
   def test_rubbish_lines
-    assert_instance_of Net::FTP::List::Unknown, Net::FTP::List.parse("++ bah! ++")
+    assert_instance_of Net::FTP::List::Entry, Net::FTP::List.parse("++ bah! ++")
   end
 
   def test_ruby_microsoft_mtime
@@ -36,7 +35,12 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
   end
 
   def test_filesize
-    assert @dir.filesize.nil?
+    assert_equal 0, @dir.filesize
     assert_equal 23437, @file.filesize
+  end
+
+  def test_zero_hour
+    file = Net::FTP::List.parse('10-15-09  00:34AM       <DIR>          aspnet_client')
+    assert_equal 1255566840.to_s, file.mtime.strftime('%s')
   end
 end

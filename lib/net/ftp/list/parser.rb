@@ -1,101 +1,28 @@
-module Net
-  class FTP
-    module List
+# Abstract FTP LIST parser. It really just defines and documents the interface.
+class Net::FTP::List::Parser
 
-      # ParserError
-      #
-      # Raw entry couldn't be parsed for some reason.
-      #
-      # == TODO
-      #
-      # Get more specific with error messages.
-      class ParserError < RuntimeError; end
+  @@parsers = []
 
-      # Abstract FTP LIST parser.
-      #
-      # It really just defines and documents the interface.
-      #
-      # == Exceptions
-      #
-      # +ParserError+ -- Raw entry could not be parsed.
-      class Parser
-        @@parsers = []
+  # Run a passed block with each parser in succession, from the most specific to the least
+  # specific. Will return the result of the block.
+  def self.with_each_parser(&blk) #:yields: parser
+    @@parsers.each(&blk)
+  end
 
-        # Parse a raw FTP LIST line.
-        #
-        # By default just takes and set the raw list entry.
-        #
-        #   Net::FTP::List.parse(raw_list_string) # => Net::FTP::List::Parser instance.
-        def initialize(raw)
-          @raw = raw
-        end
+  # Automatically add an inheriting parser to the list of known parsers.
+  def self.inherited(klass) #:nodoc:
+    @@parsers.push(klass)
+  end
 
-        # The raw list entry string.
-        def raw
-          @raw ||= ''
-        end
-        alias_method :to_s, :raw
+  # The main parse method. Return false from it if parsing fails (this is cheaper than raising an exception)
+  def self.parse(raw)
+    return false
+  end
 
-        # The items basename (filename).
-        def basename
-          @basename ||= ''
-        end
+  private
 
-        # Looks like a directory, try CWD.
-        def dir?
-          !!(@dir ||= false)
-        end
-
-        # Looks like a file, try RETR.
-        def file?
-          !!(@file ||= false)
-        end
-
-        # Looks like a symbolic link.
-        def symlink?
-          !!(@symlink ||= false)
-        end
-
-        def mtime
-          @mtime
-        end
-
-        def filesize
-          @filesize
-        end
-
-        class << self
-          # Acts as a factory.
-          #
-          # TODO: Having a class be both factory and abstract implementation seems a little nutty to me. If it ends up
-          # too confusing or gives anyone the shits I'll move it.
-          def inherited(klass) #:nodoc:
-            @@parsers << klass
-          end
-
-          # Factory method.
-          #
-          # Attempt to find a parser and parse a list item. At worst the item will return an Net::FTP::List::Unknown
-          # instance. This may change in the future so that only parsable entries are kept.
-          def parse(raw)
-            @@parsers.reverse.each do |parser|
-              begin
-                return parser.new(raw)
-              rescue ParserError
-                next
-              end
-            end
-          end
-        end
-
-      end
-
-      # Unknown parser.
-      #
-      # If all other attempts to parse the entry fail this class will be returned. Only the +raw+ and +to_s+
-      # methods will return anything useful.
-      class Unknown < Parser
-      end
-    end
+  # Automatically adds the name of the parser class to the server_type field
+  def self.emit_entry(raw, extra_attributes)
+    Net::FTP::List::Entry.new raw, extra_attributes.merge(:server_type => to_s.split('::').pop)
   end
 end
