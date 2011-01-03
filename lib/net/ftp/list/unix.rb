@@ -24,6 +24,8 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     (\S*)(\s*.*)
   }x
 
+  ONE_YEAR = (60 * 60 * 24 * 365)
+
   # Parse a Unix like FTP LIST entries.
   def self.parse(raw)
     match = REGEXP.match(raw.strip) or return false
@@ -40,6 +42,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     # TODO: Permissions, users, groups, date/time.
     filesize = match[18].to_i
     mtime = Time.parse("#{match[19]} #{match[20]}")
+    mtime -= ONE_YEAR if mtime > Time.now
 
     basename = match[21].strip
 
