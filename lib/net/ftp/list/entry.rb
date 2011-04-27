@@ -1,5 +1,6 @@
 # Represents an entry of the FTP list. Gets returned when you parse a list.
 class Net::FTP::List::Entry
+  include Comparable
 
   ALLOWED_ATTRIBUTES = [:raw, :basename, :dir, :file, :symlink, :mtime, :filesize, :device, :server_type] #:nodoc:
 
@@ -12,6 +13,35 @@ class Net::FTP::List::Entry
       raise ArgumentError, "#{key} is not supported" unless ALLOWED_ATTRIBUTES.include?(key)
       instance_variable_set("@#{key}", value)
     end
+  end
+
+  # Tests for objects equality (value and type).
+  #
+  # @param entry [Net::FTP::List::Entry] an entry of the FTP list.
+  #
+  # @return [true, false] true if the objects are equal and have the same type; false otherwise.
+  #
+  def eql?(other)
+    return false if !other.instance_of? self.class
+    return true if self.object_id == other.object_id
+
+    self.raw == other.raw # if it's exactly the same line then the objects are the same
+  end
+
+
+  # Compares the receiver against another object.
+  #
+  # @param (see #eql?)
+  #
+  # @return [Fixnum]  -1, 0, or +1 depending on whether the receiver is less than, equal to, or greater than the other object.
+  #
+  def <=>(other)
+    if other.instance_of? self.class
+      return self.filesize <=> other.filesize
+    elsif other.instance_of? Fixnum or other.instance_of? Integer or other.instance_of? Float
+      return self.filesize <=> other
+    end
+    raise ArgumentError.new('comparison of %s with %s failed!' % [self.class, other.class])
   end
 
   # The raw list entry string.
