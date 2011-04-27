@@ -16,7 +16,7 @@ class Net::FTP::List::Entry
 
   # Tests for objects equality.
   #
-  # @param entry [Net::FTP::List::Entry]
+  # @param entry [Net::FTP::List::Entry] an entry of the FTP list.
   #
   # @return [true, false] true if the objects are equal; false otherwise.
   #
