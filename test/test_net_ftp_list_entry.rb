@@ -3,6 +3,18 @@ require 'net/ftp/list'
 
 class TestNetFTPEntry < Test::Unit::TestCase
 
+  def test_equality
+    a = Net::FTP::List::Entry.new('foo1', {:basename => 'foo1'})
+    b = Net::FTP::List::Entry.new('foo2', {:basename => 'foo2'})
+    c = Net::FTP::List::Entry.new('foo1', {:basename => 'foo1'})
+
+    assert_equal a, c
+    assert_equal a, a
+    assert_not_equal a, b
+    assert_not_equal a, 1
+    assert_not_equal a, 1.0
+  end
+
   def test_raise_on_unknown_options
     assert_raise(ArgumentError) { Net::FTP::List::Entry.new("foo", {:bar => "baz"}) }
   end

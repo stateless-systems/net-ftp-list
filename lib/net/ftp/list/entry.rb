@@ -14,6 +14,18 @@ class Net::FTP::List::Entry
     end
   end
 
+  # Tests for objects equality.
+  #
+  # @param entry [Net::FTP::List::Entry]
+  #
+  # @return [true, false] true if the objects are equal; false otherwise.
+  #
+  def ==(other)
+    return false if self.class != other.class
+
+    @raw == other.raw # if it's exactly the same line then the objects are the same
+  end
+
   # The raw list entry string.
   def raw
     @raw ||= ''
