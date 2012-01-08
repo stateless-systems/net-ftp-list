@@ -2,22 +2,13 @@ require 'test/unit'
 require 'net/ftp/list'
 
 class TestNetFTPListUnix < Test::Unit::TestCase
-
-  ONE_YEAR = (60 * 60 * 24 * 365)
-
-  FIRST_MINUTE_OF_YEAR = "Jan  1 00:00"
-  LAST_MINUTE_OF_YEAR  = "Dec 31 23:59"
-  OTHER_RELATIVE_TIME  = "Mar 11 07:57"
-  SYMBOLIC_LINK_TIME   = "Oct 30 15:26"
-  ABSOLUTE_DATE        = "Feb 15  2008"
-
   def setup
-    @dir  = Net::FTP::List.parse       "drwxr-xr-x 4 user     group    4096 #{FIRST_MINUTE_OF_YEAR} etc" rescue nil
-    @file = Net::FTP::List.parse       "-rw-r--r-- 1 root     other     531 #{LAST_MINUTE_OF_YEAR} README" rescue nil
-    @other_dir = Net::FTP::List.parse  "drwxr-xr-x 8 1791     600      4096 #{OTHER_RELATIVE_TIME} forums" rescue nil
+    @dir  = Net::FTP::List.parse       "drwxr-xr-x 4 user     group    4096 Jan  1 00:00 etc" rescue nil
+    @file = Net::FTP::List.parse       "-rw-r--r-- 1 root     other     531 Dec 31 23:59 README" rescue nil
+    @other_dir = Net::FTP::List.parse  "drwxr-xr-x 8 1791     600      4096 Mar 11 07:57 forums" rescue nil
     @spaces = Net::FTP::List.parse     'drwxrwxr-x 2 danial   danial     72 May 23 12:52 spaces suck' rescue nil
-    @symlink = Net::FTP::List.parse    "lrwxrwxrwx 1 danial   danial      4 #{SYMBOLIC_LINK_TIME} bar -> /etc" rescue nil
-    @older_date = Net::FTP::List.parse "-rwxrwxrwx 1 owner    group  154112 #{ABSOLUTE_DATE} participando.xls" rescue nil
+    @symlink = Net::FTP::List.parse    "lrwxrwxrwx 1 danial   danial      4 Oct 30 15:26 bar -> /etc" rescue nil
+    @older_date = Net::FTP::List.parse "-rwxrwxrwx 1 owner    group  154112 Feb 15  2008 participando.xls" rescue nil
     @block_dev = Net::FTP::List.parse  'brw-r----- 1 root     disk   1,   0 Apr 13  2006 ram0' rescue nil
     @char_dev  = Net::FTP::List.parse  'crw-rw-rw- 1 root     root   1,   3 Apr 13  2006 null' rescue nil
     @socket_dev = Net::FTP::List.parse 'srw-rw-rw- 1 root     root        0 Aug 20 14:15 log' rescue nil
@@ -36,15 +27,53 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     assert_equal "Unix", @pipe_dev.server_type, 'LIST unix socket device'
   end
 
-  def test_ruby_unix_like_date
-    {
-        FIRST_MINUTE_OF_YEAR => @dir,
-        LAST_MINUTE_OF_YEAR => @file,
-        OTHER_RELATIVE_TIME => @other_dir,
-        SYMBOLIC_LINK_TIME => @symlink,
-        ABSOLUTE_DATE => @older_date
-    }.each do |date_and_time, parsed_entry|
-      assert_equal parse_adjust_date_and_time(date_and_time), parsed_entry.send(:mtime)
+  class ::Time
+    class << self
+      def time_travel(time)
+        @traveled_to_time = time
+
+        begin
+          yield
+        ensure
+          @traveled_to_time = nil
+        end
+      end
+
+      alias_method :original_now, :now
+      def now
+        @traveled_to_time || original_now
+      end
+    end
+  end
+
+  # mtimes in the past, same year.
+  def test_ruby_unix_like_date_past_same_year
+    Time.time_travel(Time.new(2009, 1, 1)) do
+      assert_equal Time.new(2009, 1, 1), Net::FTP::List.parse(@dir.raw).mtime
+    end
+    Time.time_travel(Time.new(2008, 4, 1)) do
+      assert_equal Time.new(2008, 3, 11, 7, 57), Net::FTP::List.parse(@other_dir.raw).mtime
+    end
+  end
+
+  # mtimes in the past, previous year
+  def test_ruby_unix_like_date_past_previous_year
+    Time.time_travel(Time.new(2008, 2, 4)) do
+      assert_equal Time.new(2007, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
+    end
+  end
+
+  # mtime in the future.
+  def test_ruby_unix_like_date_future
+    Time.time_travel(Time.new(2006, 3, 1)) do
+      assert_equal Time.new(2006, 4, 13), Net::FTP::List.parse(@char_dev.raw).mtime
+    end
+  end
+
+  # Parsed during a leap year.
+  def test_ruby_unix_like_date_leap_year
+    Time.time_travel(Time.new(2012, 1, 2)) do
+      assert_equal Time.new(2011, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
     end
   end
 
@@ -104,13 +133,5 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   def test_unix_pipe_device
     assert_equal 'xconsole', @pipe_dev.basename
     assert @pipe_dev.device?
-  end
-
-
-  private
-  def parse_adjust_date_and_time(date_and_time)
-    parsed_time = Time.parse(date_and_time)
-    parsed_time -= ONE_YEAR if parsed_time > Time.now
-    parsed_time
   end
 end
