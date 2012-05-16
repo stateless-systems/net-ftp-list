@@ -39,6 +39,9 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     end
     return false unless dir or symlink or file or device
 
+    # Don't match on rumpus (which looks very similar to unix)
+    return false if match[17].nil? and ((match[15].nil? and match[16].to_s == 'folder') or match[15].to_s == '0')
+
     # TODO: Permissions, users, groups, date/time.
     filesize = match[18].to_i
     mtime_string = "#{match[19]} #{match[20]}"
