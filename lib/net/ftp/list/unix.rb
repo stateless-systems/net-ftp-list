@@ -14,7 +14,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
   REGEXP = %r{
     ([pbcdlfmpSs-])
     (((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-])))\+?\s+
-    (\d+)\s+
+    (?:(\d+)\s+)?
     (\S+)\s+
     (?:(\S+(?:\s\S+)*)\s+)?
     (?:\d+,\s+)?
