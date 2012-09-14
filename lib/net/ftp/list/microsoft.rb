@@ -5,6 +5,7 @@ require 'date'
 #
 # == MATCHES
 #
+#   06-25-2007  01:08PM       <DIR>          etc
 #   06-25-07    01:08PM       <DIR>          etc
 #   11-27-07    08:45PM                23437 README.TXT
 class Net::FTP::List::Microsoft < Net::FTP::List::Parser
@@ -22,6 +23,7 @@ class Net::FTP::List::Microsoft < Net::FTP::List::Parser
 
     date_match = %r!(\d\d).(\d\d).(\d\d(?:\d\d)?)!.match(match[1])
     date_format = date_match[1].to_i > 12 ? '%d-%m-%y' : '%m-%d-%y'
+    date_format.sub!(%r{%y}, '%Y') if date_match[3].length > 2
 
     if match[1] !~ /\-/
       date_format.gsub!(/\-/, '/') if match[1] =~ %r{/}

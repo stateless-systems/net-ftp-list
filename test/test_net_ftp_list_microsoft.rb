@@ -13,6 +13,14 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
     assert_equal "Microsoft", @file.server_type, 'LIST M$ directory'
   end
 
+  def test_parse_dd_mm_yyyy
+    dd_mm_yyyy = nil
+    assert_nothing_raised do
+      dd_mm_yyyy = Net::FTP::List.parse('25-06-2007  01:08PM       <DIR>          etc')
+    end
+    assert_equal dd_mm_yyyy.mtime.strftime('%Y-%m-%d'), '2007-06-25'
+  end
+
   def test_parse_dd_mm_yy
     dd_mm_yy = nil
     assert_nothing_raised do
