@@ -21,11 +21,11 @@ class Net::FTP::List::Microsoft < Net::FTP::List::Parser
     match = REGEXP.match(raw.strip) or return false
 
     date_match = %r!(\d\d).(\d\d).(\d\d(?:\d\d)?)!.match(match[1])
-    date_format = date_match[2].to_i > 12 ? '%m-%d-%y' : '%d-%m-%y'
+    date_format = date_match[1].to_i > 12 ? '%d-%m-%y' : '%m-%d-%y'
 
-    if match[1] !~ /-/
-      date_format.sub!(/-/, '/') if match[1] =~ %r{/}
-      date_format.sub!(/-/, ':') if match[1] =~ %r{:}
+    if match[1] !~ /\-/
+      date_format.gsub!(/\-/, '/') if match[1] =~ %r{/}
+      date_format.gsub!(/\-/, ':') if match[1] =~ %r{:}
     end
 
     mtime = DateTime.strptime("#{match[1]} #{match[2]}", "#{date_format} %H:%M%p")
