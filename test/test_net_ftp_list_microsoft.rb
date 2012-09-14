@@ -13,6 +13,30 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
     assert_equal "Microsoft", @file.server_type, 'LIST M$ directory'
   end
 
+  def test_parse_mm_dd_yy
+    mm_dd_yyyy = nil
+    assert_nothing_raised do
+      mm_dd_yyyy = Net::FTP::List.parse('06-25-07  01:08PM       <DIR>          etc')
+    end
+    assert_equal mm_dd_yyyy.mtime.strftime('%Y-%m-%d'), '2007-06-25'
+  end
+
+  def test_parse_slash_delimited_date
+    slash_delimited = nil
+    assert_nothing_raised do
+      slash_delimited = Net::FTP::List.parse('06-25-07  01:08PM       <DIR>          etc')
+    end
+    assert_equal slash_delimited.mtime.strftime('%Y-%m-%d'), '2007-06-25'
+  end
+
+  def test_parse_colon_delimited_date
+    colon_delimited = nil
+    assert_nothing_raised do
+      colon_delimited = Net::FTP::List.parse('06-25-07  01:08PM       <DIR>          etc')
+    end
+    assert_equal colon_delimited.mtime.strftime('%Y-%m-%d'), '2007-06-25'
+  end
+
   def test_rubbish_lines
     assert_instance_of Net::FTP::List::Entry, Net::FTP::List.parse("++ bah! ++")
   end
