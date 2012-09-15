@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "net-ftp-list"
-  s.version = "3.2.4"
+  s.version = "3.2.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stateless Systems"]
-  s.date = "2012-09-14"
+  s.date = "2012-09-15"
   s.email = "enquiries@statelesssystems.com"
   s.extra_rdoc_files = [
     "README.txt"
@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://github.com/stateless-systems/net-ftp-list"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.15"
+  s.rubygems_version = "1.8.23"
   s.summary = "Parse FTP LIST command output."
 
   if s.respond_to? :specification_version then
