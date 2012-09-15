@@ -8,10 +8,10 @@ class Net::FTP::List::Entry
   # that can be used on the object. By default just takes and set the raw list entry.
   #   Net::FTP::List.parse(raw_list_string) # => Net::FTP::List::Parser instance.
   def initialize(raw_ls_line, optional_attributes = {}) #:nodoc:
-    @raw = raw_ls_line
+    @raw = raw_ls_line.force_encoding('utf-8')
     optional_attributes.each_pair do |key, value|
       raise ArgumentError, "#{key} is not supported" unless ALLOWED_ATTRIBUTES.include?(key)
-      instance_variable_set("@#{key}", value)
+      instance_variable_set("@#{key}", value.respond_to?(:force_encoding) ? value.force_encoding('utf-8') : value)
     end
   end
 
