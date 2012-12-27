@@ -50,32 +50,33 @@ class TestNetFTPListUnix < Test::Unit::TestCase
 
   # mtimes in the past, same year.
   def test_ruby_unix_like_date_past_same_year
-    Time.time_travel(Time.new(2009, 1, 1)) do
-      assert_equal Time.new(2009, 1, 1), Net::FTP::List.parse(@dir.raw).mtime
+
+    Time.time_travel(Time.local(2009, 1, 1)) do
+      assert_equal Time.local(2009, 1, 1), Net::FTP::List.parse(@dir.raw).mtime
     end
-    Time.time_travel(Time.new(2008, 4, 1)) do
-      assert_equal Time.new(2008, 3, 11, 7, 57), Net::FTP::List.parse(@other_dir.raw).mtime
+    Time.time_travel(Time.local(2008, 4, 1)) do
+      assert_equal Time.local(2008, 3, 11, 7, 57), Net::FTP::List.parse(@other_dir.raw).mtime
     end
   end
 
   # mtimes in the past, previous year
   def test_ruby_unix_like_date_past_previous_year
-    Time.time_travel(Time.new(2008, 2, 4)) do
-      assert_equal Time.new(2007, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
+    Time.time_travel(Time.local(2008, 2, 4)) do
+      assert_equal Time.local(2007, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
     end
   end
 
   # mtime in the future.
   def test_ruby_unix_like_date_future
-    Time.time_travel(Time.new(2006, 3, 1)) do
-      assert_equal Time.new(2006, 4, 13), Net::FTP::List.parse(@char_dev.raw).mtime
+    Time.time_travel(Time.local(2006, 3, 1)) do
+      assert_equal Time.local(2006, 4, 13), Net::FTP::List.parse(@char_dev.raw).mtime
     end
   end
 
   # Parsed during a leap year.
   def test_ruby_unix_like_date_leap_year
-    Time.time_travel(Time.new(2012, 1, 2)) do
-      assert_equal Time.new(2011, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
+    Time.time_travel(Time.local(2012, 1, 2)) do
+      assert_equal Time.local(2011, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
     end
   end
 
