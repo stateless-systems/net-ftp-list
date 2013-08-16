@@ -14,6 +14,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     @socket_dev = Net::FTP::List.parse     'srw-rw-rw- 1 root     root        0 Aug 20 14:15 log'                 rescue nil
     @pipe_dev = Net::FTP::List.parse       'prw-r----- 1 root     adm         0 Nov 22 10:30 xconsole'            rescue nil
     @file_no_inodes = Net::FTP::List.parse '-rw-r--r-- foo@localhost foo@localhost  6034 May 14 23:13 index.html' rescue nil
+    @file_today = Net::FTP::List.parse     'crw-rw-rw- 1 root     root   1,   3 Aug 16 14:28 today.txt'           rescue nil
   end
 
   def test_parse_new
@@ -77,6 +78,13 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   def test_ruby_unix_like_date_leap_year
     Time.time_travel(Time.local(2012, 1, 2)) do
       assert_equal Time.local(2011, 10, 30, 15, 26), Net::FTP::List.parse(@symlink.raw).mtime
+    end
+  end
+
+  # mtimes today, same year.
+  def test_ruby_unix_like_date_today_same_year
+    Time.time_travel(Time.local(2013, 8, 16)) do
+      assert_equal Time.local(2013, 8, 16, 14, 28), Net::FTP::List.parse(@file_today.raw).mtime
     end
   end
 
