@@ -4,17 +4,18 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "net-ftp-list"
-  s.version = "3.2.5"
+  s.name = %q{net-ftp-list}
+  s.version = "3.2.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stateless Systems"]
-  s.date = "2012-09-15"
-  s.email = "enquiries@statelesssystems.com"
+  s.date = %q{2013-08-27}
+  s.email = %q{enquiries@statelesssystems.com}
   s.extra_rdoc_files = [
     "README.txt"
   ]
   s.files = [
+    ".ruby-version",
     "README.txt",
     "Rakefile",
     "VERSION.yml",
@@ -34,10 +35,10 @@ Gem::Specification.new do |s|
     "test/test_net_ftp_list_rumpus.rb",
     "test/test_net_ftp_list_unix.rb"
   ]
-  s.homepage = "http://github.com/stateless-systems/net-ftp-list"
+  s.homepage = %q{http://github.com/stateless-systems/net-ftp-list}
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.23"
-  s.summary = "Parse FTP LIST command output."
+  s.rubygems_version = %q{1.6.2}
+  s.summary = %q{Parse FTP LIST command output.}
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
