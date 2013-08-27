@@ -44,18 +44,25 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
 
     # TODO: Permissions, users, groups, date/time.
     filesize = match[18].to_i
-    mtime_string = "#{match[19]} #{match[20]}"
-    mtime = Time.parse(mtime_string)
+    
+    mtime_month_and_day = match[19]
+    mtime_time_or_year = match[20]
 
     # Unix mtimes specify a 4 digit year unless the data is within the past 180
     # days or so. Future dates always specify a 4 digit year. 
-    #
-    # Since the above #parse call fills in today's date for missing date
-    # components, it can sometimes get the year wrong. To fix this, we make
-    # sure all mtimes without a 4 digit year are in the past.
-    if match[20] !~ /\d{4}/ && mtime > Time.now
-      mtime = Time.parse("#{mtime_string} #{mtime.year - 1}")
+    # If the parsed date, with today's year, could be in the future, then
+    # the date must be for the previous year
+    mtime_string = if mtime_time_or_year.match(/^[0-9][0-9]:[0-9][0-9]$/)
+      if Time.parse("#{mtime_month_and_day} #{Time.now.year}") > Time.now
+        "#{mtime_month_and_day} #{mtime_time_or_year} #{Time.now.year - 1}"
+      else
+        "#{mtime_month_and_day} #{mtime_time_or_year} #{Time.now.year}"
+      end
+    elsif mtime_time_or_year.match(/^[0-9][0-9][0-9][0-9]$/)
+      "#{mtime_month_and_day} #{mtime_time_or_year}"
     end
+
+    mtime = Time.parse(mtime_string)
 
     basename = match[21].strip
 
