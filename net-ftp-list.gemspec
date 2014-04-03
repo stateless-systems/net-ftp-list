@@ -40,6 +40,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{Parse FTP LIST command output.}
 
+  s.add_development_dependency 'jeweler'
+  s.add_development_dependency 'bundler'
+
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
