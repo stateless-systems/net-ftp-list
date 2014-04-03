@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/stateless-systems/net-ftp-list"
     gem.authors = ["Stateless Systems"]
   end
+  Jeweler::RubygemsDotOrgTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
