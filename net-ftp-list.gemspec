@@ -4,18 +4,20 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{net-ftp-list}
-  s.version = "3.2.6"
+  s.name = "net-ftp-list"
+  s.version = "3.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stateless Systems"]
-  s.date = %q{2013-08-27}
-  s.email = %q{enquiries@statelesssystems.com}
+  s.date = "2014-04-03"
+  s.email = "enquiries@statelesssystems.com"
   s.extra_rdoc_files = [
     "README.txt"
   ]
   s.files = [
     ".ruby-version",
+    "Gemfile",
+    "Gemfile.lock",
     "README.txt",
     "Rakefile",
     "VERSION.yml",
@@ -35,21 +37,27 @@ Gem::Specification.new do |s|
     "test/test_net_ftp_list_rumpus.rb",
     "test/test_net_ftp_list_unix.rb"
   ]
-  s.homepage = %q{http://github.com/stateless-systems/net-ftp-list}
+  s.homepage = "http://github.com/stateless-systems/net-ftp-list"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{Parse FTP LIST command output.}
-
-  s.add_development_dependency 'jeweler'
-  s.add_development_dependency 'bundler'
+  s.rubygems_version = "2.0.14"
+  s.summary = "Parse FTP LIST command output."
 
   if s.respond_to? :specification_version then
-    s.specification_version = 3
+    s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<net-ftp-list>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
     else
+      s.add_dependency(%q<net-ftp-list>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
     end
   else
+    s.add_dependency(%q<net-ftp-list>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
   end
 end
 
