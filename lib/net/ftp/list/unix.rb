@@ -52,13 +52,13 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     # days or so. Future dates always specify a 4 digit year. 
     # If the parsed date, with today's year, could be in the future, then
     # the date must be for the previous year
-    mtime_string = if mtime_time_or_year.match(/^[0-9][0-9]:[0-9][0-9]$/)
+    mtime_string = if mtime_time_or_year.match(/^[0-9]{1,2}:[0-9]{2}$/)
       if Time.parse("#{mtime_month_and_day} #{Time.now.year}") > Time.now
         "#{mtime_month_and_day} #{mtime_time_or_year} #{Time.now.year - 1}"
       else
         "#{mtime_month_and_day} #{mtime_time_or_year} #{Time.now.year}"
       end
-    elsif mtime_time_or_year.match(/^[0-9][0-9][0-9][0-9]$/)
+    elsif mtime_time_or_year.match(/^[0-9]{4}$/)
       "#{mtime_month_and_day} #{mtime_time_or_year}"
     end
 

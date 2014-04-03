@@ -3,18 +3,18 @@ require 'net/ftp/list'
 
 class TestNetFTPListUnix < Test::Unit::TestCase
   def setup
-    @dir  = Net::FTP::List.parse           "drwxr-xr-x 4 user     group    4096 Jan  1 00:00 etc"                 rescue nil
-    @file = Net::FTP::List.parse           "-rw-r--r-- 1 root     other     531 Dec 31 23:59 README"              rescue nil
-    @other_dir = Net::FTP::List.parse      "drwxr-xr-x 8 1791     600      4096 Mar 11 07:57 forums"              rescue nil
-    @spaces = Net::FTP::List.parse         'drwxrwxr-x 2 danial   danial     72 May 23 12:52 spaces suck'         rescue nil
-    @symlink = Net::FTP::List.parse        "lrwxrwxrwx 1 danial   danial      4 Oct 30 15:26 bar -> /etc"         rescue nil
-    @older_date = Net::FTP::List.parse     "-rwxrwxrwx 1 owner    group  154112 Feb 15  2008 participando.xls"    rescue nil
-    @block_dev = Net::FTP::List.parse      'brw-r----- 1 root     disk   1,   0 Apr 13  2006 ram0'                rescue nil
-    @char_dev  = Net::FTP::List.parse      'crw-rw-rw- 1 root     root   1,   3 Apr 13  2006 null'                rescue nil
-    @socket_dev = Net::FTP::List.parse     'srw-rw-rw- 1 root     root        0 Aug 20 14:15 log'                 rescue nil
-    @pipe_dev = Net::FTP::List.parse       'prw-r----- 1 root     adm         0 Nov 22 10:30 xconsole'            rescue nil
-    @file_no_inodes = Net::FTP::List.parse '-rw-r--r-- foo@localhost foo@localhost  6034 May 14 23:13 index.html' rescue nil
-    @file_today = Net::FTP::List.parse     'crw-rw-rw- 1 root     root   1,   3 Aug 16 14:28 today.txt'           rescue nil
+    @dir  = Net::FTP::List.parse              'drwxr-xr-x 4 user     group    4096 Jan  1 00:00 etc'                 rescue nil
+    @file = Net::FTP::List.parse              '-rw-r--r-- 1 root     other     531 Dec 31 23:59 README'              rescue nil
+    @other_dir = Net::FTP::List.parse         'drwxr-xr-x 8 1791     600      4096 Mar 11 07:57 forums'              rescue nil
+    @spaces = Net::FTP::List.parse            'drwxrwxr-x 2 danial   danial     72 May 23 12:52 spaces suck'         rescue nil
+    @symlink = Net::FTP::List.parse           'lrwxrwxrwx 1 danial   danial      4 Oct 30 15:26 bar -> /etc'         rescue nil
+    @older_date = Net::FTP::List.parse        '-rwxrwxrwx 1 owner    group  154112 Feb 15  2008 participando.xls'    rescue nil
+    @block_dev = Net::FTP::List.parse         'brw-r----- 1 root     disk   1,   0 Apr 13  2006 ram0'                rescue nil
+    @char_dev  = Net::FTP::List.parse         'crw-rw-rw- 1 root     root   1,   3 Apr 13  2006 null'                rescue nil
+    @socket_dev = Net::FTP::List.parse        'srw-rw-rw- 1 root     root        0 Aug 20 14:15 log'                 rescue nil
+    @pipe_dev = Net::FTP::List.parse          'prw-r----- 1 root     adm         0 Nov 22 10:30 xconsole'            rescue nil
+    @file_no_inodes = Net::FTP::List.parse    '-rw-r--r-- foo@localhost foo@localhost  6034 May 14 23:13 index.html' rescue nil
+    @file_today = Net::FTP::List.parse        'crw-rw-rw- 1 root     root   1,   3 Aug 16 14:28 today.txt'           rescue nil
   end
 
   def test_parse_new
@@ -144,5 +144,15 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   def test_unix_pipe_device
     assert_equal 'xconsole', @pipe_dev.basename
     assert @pipe_dev.device?
+  end
+
+  def test_single_digit_hour
+    assert_nothing_raised do
+      @single_digit_hour = Net::FTP::List.parse('-rw-r--r-- 1 root     other     531 Dec 31  3:59 README')
+    end
+
+    Time.time_travel(Time.local(2013, 8, 16)) do
+      assert_equal Time.local(2013, 12, 31, 3, 59), @single_digit_hour.mtime
+    end
   end
 end
