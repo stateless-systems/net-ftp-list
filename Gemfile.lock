@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    net-ftp-list (3.2.6)
+    net-ftp-list (3.2.7)
+      net-ftp-list
 
 GEM
   remote: https://rubygems.org/
