@@ -1,9 +1,3 @@
-PATH
-  remote: .
-  specs:
-    net-ftp-list (3.2.7)
-      net-ftp-list
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,4 +56,3 @@ PLATFORMS
 DEPENDENCIES
   bundler
   jeweler
-  net-ftp-list!
