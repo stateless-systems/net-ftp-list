@@ -15,6 +15,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     @pipe_dev = Net::FTP::List.parse          'prw-r----- 1 root     adm         0 Nov 22 10:30 xconsole'            rescue nil
     @file_no_inodes = Net::FTP::List.parse    '-rw-r--r-- foo@localhost foo@localhost  6034 May 14 23:13 index.html' rescue nil
     @file_today = Net::FTP::List.parse        'crw-rw-rw- 1 root     root   1,   3 Aug 16 14:28 today.txt'           rescue nil
+    @no_user = Net::FTP::List.parse           '-rw-rw----                     2786 Jul  7 01:57 README'              rescue nil
   end
 
   def test_parse_new
@@ -28,6 +29,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
     assert_equal "Unix", @socket_dev.server_type,     'LIST unix socket device'
     assert_equal "Unix", @pipe_dev.server_type,       'LIST unix socket device'
     assert_equal "Unix", @file_no_inodes.server_type, 'LIST unixish file with no inodes'
+    assert_equal "Unix", @no_user.server_type,        'LIST unixish file with no user/group'
   end
 
   class ::Time
@@ -147,11 +149,11 @@ class TestNetFTPListUnix < Test::Unit::TestCase
   end
 
   def test_single_digit_hour
-    assert_nothing_raised do
-      @single_digit_hour = Net::FTP::List.parse('-rw-r--r-- 1 root     other     531 Dec 31  3:59 README')
-    end
+    Time.time_travel(Time.local(2014, 8, 16)) do
+      assert_nothing_raised do
+        @single_digit_hour = Net::FTP::List.parse('-rw-r--r-- 1 root     other     531 Dec 31  3:59 README')
+      end
 
-    Time.time_travel(Time.local(2013, 8, 16)) do
       assert_equal Time.local(2013, 12, 31, 3, 59), @single_digit_hour.mtime
     end
   end
