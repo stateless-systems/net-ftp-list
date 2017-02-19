@@ -2,7 +2,7 @@
 class Net::FTP::List::Entry
   include Comparable
 
-  ALLOWED_ATTRIBUTES = [:raw, :basename, :dir, :file, :symlink, :mtime, :filesize, :device, :server_type] #:nodoc:
+  ALLOWED_ATTRIBUTES = [:raw, :basename, :dir, :file, :symlink, :mtime, :filesize, :device, :server_type, :symlink_destination] #:nodoc:
 
   # Create a new entry object. The additional argument is the list of metadata keys
   # that can be used on the object. By default just takes and set the raw list entry.
@@ -55,6 +55,11 @@ class Net::FTP::List::Entry
     @basename ||= ''
   end
   alias name basename
+
+  # Symlink destination, the "/etc" in "bar -> /etc". May be nil.
+  def symlink_destination
+    @symlink_destination
+  end
 
   # Looks like a directory, try CWD.
   def dir?

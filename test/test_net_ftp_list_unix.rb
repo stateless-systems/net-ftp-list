@@ -102,6 +102,7 @@ class TestNetFTPListUnix < Test::Unit::TestCase
 
   def test_ruby_unix_like_symlink
     assert_equal 'bar', @symlink.basename
+    assert_equal "/etc", @symlink.symlink_destination
     assert @symlink.symlink?
     assert !@symlink.dir?
     assert !@symlink.file?
