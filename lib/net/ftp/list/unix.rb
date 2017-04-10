@@ -70,7 +70,10 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     basename += match[22] unless match[22].nil?
 
     # strip the symlink stuff we don't care about
-    basename.sub!(/\s+\->.+$/, '') if symlink
+    if symlink
+      basename.sub!(/\s+\->(.+)$/, '')
+      symlink_destination = $1.strip
+    end
 
     emit_entry(
       raw,
@@ -80,6 +83,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
       :symlink => symlink,
       :filesize => filesize,
       :basename => basename,
+      :symlink_destination => symlink_destination,
       :mtime => mtime
     )
   end
