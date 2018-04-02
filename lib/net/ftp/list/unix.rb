@@ -72,7 +72,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     # strip the symlink stuff we don't care about
     if symlink
       basename.sub!(/\s+\->(.+)$/, '')
-      symlink_destination = $1.strip
+      symlink_destination = $1.strip if $1
     end
 
     emit_entry(
