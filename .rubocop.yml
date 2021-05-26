@@ -1,0 +1,17 @@
+inherit_gem:
+  rubocop-bsm:
+    - default.yml
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  TargetRubyVersion: "2.5"
+
+Metrics/ParameterLists:
+  Exclude:
+    - lib/net/ftp/list/entry.rb
+Metrics/MethodLength:
+  Exclude:
+    - lib/net/ftp/list/unix.rb
+    - test/**/*.rb

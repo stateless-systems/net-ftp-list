@@ -11,36 +11,34 @@ require 'date'
 class Net::FTP::List::Microsoft < Net::FTP::List::Parser
   REGEXP = %r!
     ^\s*
-    ([0-9\-:\/]{5,})\s+([0-9\-:]{3,}(?:[aApP][mM])?)\s+
+    ([0-9\-:/]{5,})\s+([0-9\-:]{3,}(?:[aApP][mM])?)\s+
     (?:(<DIR>)|([0-9]+))\s+
     (\S.*)
     \s*$
-  !x
+  !x.freeze
 
   # Parse a Microsoft(NT) like FTP LIST entries.
-  def self.parse(raw)
+  def self.parse(raw, timezone: :utc)
     match = REGEXP.match(raw.strip) or return false
 
-    date_match = %r!(\d\d).(\d\d).(\d\d(?:\d\d)?)!.match(match[1])
+    date_match = /(\d\d).(\d\d).(\d\d(?:\d\d)?)/.match(match[1])
     date_format = date_match[1].to_i > 12 ? '%d-%m-%y' : '%m-%d-%y'
-    date_format.sub!(%r{%y}, '%Y') if date_match[3].length > 2
+    date_format.sub!(/%y/, '%Y') if date_match[3].length > 2
 
-    if match[1] !~ /\-/
-      date_format.gsub!(/\-/, '/') if match[1] =~ %r{/}
-      date_format.gsub!(/\-/, ':') if match[1] =~ %r{:}
+    unless /-/.match?(match[1])
+      date_format.tr!('-', '/') if %r{/}.match?(match[1])
+      date_format.tr!('-', ':') if /:/.match?(match[1])
     end
 
-    mtime = DateTime.strptime("#{match[1]} #{match[2]}", "#{date_format} %H:%M%p")
-    is_dir = match[3] == '<DIR>'
-    filesize = is_dir ? 0 : match[4].to_i
+    mtime = parse_time("#{match[1]} #{match[2]}", format: "#{date_format} %H:%M%p", timezone: timezone)
+    type  = match[3] == '<DIR>' ? :dir : :file
 
     emit_entry(
       raw,
-      :dir => is_dir,
-      :file => !is_dir,
-      :filesize => filesize,
-      :basename => match[5],
-      :mtime => mtime
+      type: type,
+      filesize: match[4].to_i,
+      basename: match[5],
+      mtime: mtime,
     )
   end
 end

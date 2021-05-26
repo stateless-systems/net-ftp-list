@@ -6,3 +6,4 @@ pkg
 .idea/*
 .idea/**/*
 *.gem
+.ruby-version

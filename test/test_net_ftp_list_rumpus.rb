@@ -2,20 +2,19 @@ require 'test/unit'
 require 'net/ftp/list'
 
 class TestNetFTPListRumpus < Test::Unit::TestCase
-
   def setup
     @dir = Net::FTP::List.parse 'drwxrwxrwx               folder        0 Nov 16 22:12 Alias'
-    @file = Net::FTP::List.parse '-rw-r--r--        0      101426   101426 Jun  7  2008 imap with spaces.rb'
+    @file = Net::FTP::List.parse '-rw-r--r--        0      101426   101426 Jun  7  2008 imap with spaces.rb', timezone: :local
   end
 
   def test_parsed
-    assert_equal "Rumpus", @dir.server_type,  'LIST Rumpus directory'
-    assert_equal "Rumpus", @file.server_type, 'LIST Rumpus file with spaces'
+    assert_equal 'Rumpus', @dir.server_type,  'LIST Rumpus directory'
+    assert_equal 'Rumpus', @file.server_type, 'LIST Rumpus file with spaces'
   end
 
   def test_ruby_unix_like_date
-    assert_equal Time.parse("Nov 16 22:12"), @dir.mtime
-    assert_equal Time.parse("Jun 7 2008"), @file.mtime
+    assert_equal Time.utc(Time.now.year, 11, 16, 22, 12), @dir.mtime
+    assert_equal Time.local(2008, 6, 7), @file.mtime
   end
 
   def test_dir

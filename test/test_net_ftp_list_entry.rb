@@ -1,18 +1,18 @@
 require 'test/unit'
 require 'net/ftp/list'
+require 'bigdecimal'
 
 class TestNetFTPEntry < Test::Unit::TestCase
-
   def test_equality
-    a = Net::FTP::List::Entry.new('foo1', {:basename => 'foo1'})
-    b = Net::FTP::List::Entry.new('foo2', {:basename => 'foo2'})
-    c = Net::FTP::List::Entry.new('foo1', {:basename => 'foo1'})
+    a = Net::FTP::List::Entry.new('foo1', basename: 'foo1')
+    b = Net::FTP::List::Entry.new('foo2', basename: 'foo2')
+    c = Net::FTP::List::Entry.new('foo1', basename: 'foo1')
 
-    assert a.eql? c
+    assert a.eql?(c)
     assert a.eql? a
     assert !a.eql?(b)
     assert !a.eql?(1)
-    assert !a.eql?(1.0)
+    assert !a.eql?(BigDecimal('1.0'))
   end
 
   def test_comparison
@@ -26,24 +26,24 @@ class TestNetFTPEntry < Test::Unit::TestCase
 
     assert file2 > file1
     assert file2 >= file1
-    assert file2 == file2
+    assert file2 == Net::FTP::List.parse(raw2)
     assert file2 <= file3
     assert file2 < file3
-    assert !(file2 < file1)
-    assert !(file2 <= file1)
-    assert !(file2 == file1)
-    assert !(file2 == file3)
-    assert !(file2 > file3)
-    assert !(file2 >= file3)
+    assert file2 >= file1
+    assert file2 > file1
+    assert file2 != file1
+    assert file2 != file3
+    assert file2 <= file3
+    assert file2 < file3
 
-    assert !(file2 < 2)
-    assert !(file2 < 2.0)
+    assert file2 >= 2
+    assert file2 >= 2.0
     assert file2 <= 2
     assert file2 <= 2.0
     assert file2 == 2
-    assert file2 == 2.0
-    assert !(file2 > 2)
-    assert !(file2 > 2.0)
+    assert file2 == BigDecimal('2.0')
+    assert file2 <= 2
+    assert file2 <= 2.0
     assert file2 >= 2
     assert file2 >= 2.0
 
@@ -52,7 +52,7 @@ class TestNetFTPEntry < Test::Unit::TestCase
   end
 
   def test_raise_on_unknown_options
-    assert_raise(ArgumentError) { Net::FTP::List::Entry.new("foo", {:bar => "baz"}) }
+    assert_raise(ArgumentError) { Net::FTP::List::Entry.new('foo', bar: 'baz') }
   end
 
   def test_default_values
@@ -67,7 +67,6 @@ class TestNetFTPEntry < Test::Unit::TestCase
     assert !e.file?
     assert !e.symlink?
     assert_kind_of Time, e.mtime
-    assert_equal "Unknown", e.server_type
+    assert_equal 'Unknown', e.server_type
   end
-
 end

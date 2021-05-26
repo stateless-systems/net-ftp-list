@@ -2,20 +2,19 @@ require 'test/unit'
 require 'net/ftp/list'
 
 class TestNetFTPListNetware < Test::Unit::TestCase
-
   def setup
-    @dir  = Net::FTP::List.parse('d [RWCEAFMS] dpearce                          512 Jun 27 23:46 public.www')
-    @file = Net::FTP::List.parse('- [RWCEAFMS] dpearce                         2767 Jun 22 06:22 about.html')
+    @dir   = Net::FTP::List.parse('d [RWCEAFMS] dpearce                          512 Jun 27 23:46 public.www')
+    @file  = Net::FTP::List.parse('- [RWCEAFMS] dpearce                         2767 Jun 22 06:22 about.html', timezone: :local)
   end
 
   def test_parse_new
-    assert_equal "Netware", @dir.server_type, 'LIST Netware directory'
-    assert_equal "Netware", @file.server_type, 'LIST Netware file'
+    assert_equal 'Netware', @dir.server_type, 'LIST Netware directory'
+    assert_equal 'Netware', @file.server_type, 'LIST Netware file'
   end
 
   def test_ruby_netware_mtime
-    assert_equal @dir.mtime, Time.parse('Jun 27 23:46')
-    assert_equal @file.mtime, Time.parse('Jun 22 06:22')
+    assert_equal Time.utc(Time.now.year, 6, 27, 23, 46), @dir.mtime
+    assert_equal Time.local(Time.now.year, 6, 22, 6, 22), @file.mtime
   end
 
   def test_ruby_netware_like_dir
@@ -34,5 +33,4 @@ class TestNetFTPListNetware < Test::Unit::TestCase
     assert_equal 512, @dir.filesize
     assert_equal 2767, @file.filesize
   end
-
 end
