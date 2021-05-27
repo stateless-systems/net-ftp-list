@@ -2,15 +2,14 @@ require 'test/unit'
 require 'net/ftp/list'
 
 class TestNetFTPListMicrosoft < Test::Unit::TestCase
-
   def setup
     @dir  = Net::FTP::List.parse('06-25-07  01:08PM       <DIR>          etc')
     @file = Net::FTP::List.parse('11-27-07  08:45PM                23437 README.TXT')
   end
 
   def test_parse_new
-    assert_equal "Microsoft", @dir.server_type, 'LIST M$ directory'
-    assert_equal "Microsoft", @file.server_type, 'LIST M$ directory'
+    assert_equal 'Microsoft', @dir.server_type, 'LIST M$ directory'
+    assert_equal 'Microsoft', @file.server_type, 'LIST M$ directory'
   end
 
   def test_parse_dd_mm_yyyy
@@ -62,12 +61,12 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
   end
 
   def test_rubbish_lines
-    assert_instance_of Net::FTP::List::Entry, Net::FTP::List.parse("++ bah! ++")
+    assert_instance_of Net::FTP::List::Entry, Net::FTP::List.parse('++ bah! ++')
   end
 
   def test_ruby_microsoft_mtime
-    assert_equal DateTime.strptime('06-25-07  01:08PM', "%m-%d-%y  %I:%M%p"), @dir.mtime
-    assert_equal DateTime.strptime('11-27-07  08:45PM', "%m-%d-%y  %I:%M%p"), @file.mtime
+    assert_equal Time.utc(2007, 6, 25, 13, 8), @dir.mtime
+    assert_equal Time.utc(2007, 11, 27, 20, 45), @file.mtime
   end
 
   def test_ruby_microsoft_like_dir
@@ -89,6 +88,6 @@ class TestNetFTPListMicrosoft < Test::Unit::TestCase
 
   def test_zero_hour
     file = Net::FTP::List.parse('10-15-09  00:34AM       <DIR>          aspnet_client')
-    assert_equal 1255566840.to_s, file.mtime.strftime('%s')
+    assert_equal Time.utc(2009, 10, 15, 0, 34), file.mtime
   end
 end

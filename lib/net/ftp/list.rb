@@ -21,9 +21,9 @@ module Net::FTP::List
   end
 
   # Parse a line from FTP LIST responsesa and return a Net::FTP::List::Entry
-  def self.parse(*args)
-    Parser.with_each_parser do | p |
-      entry = p.parse(*args)
+  def self.parse(*args, **opts)
+    Parser.parsers.each do |parser|
+      entry = parser.parse(*args, **opts)
       return entry if entry
     end
   end
@@ -32,4 +32,3 @@ module Net::FTP::List
   class ParseError < RuntimeError
   end
 end
-
