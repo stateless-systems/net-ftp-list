@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'net-ftp-list'
-  s.version = '3.4.0'
+  s.version = '3.3.0'
   s.authors = ['Stateless Systems']
   s.email = 'enquiries@statelesssystems.com'
   s.summary = 'Parse FTP LIST command output.'
