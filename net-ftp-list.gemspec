@@ -12,7 +12,11 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 2.5'
 
+  s.add_dependency 'net-ftp'
+
+  s.add_development_dependency 'bigdecimal'
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rubocop-bsm'
   s.add_development_dependency 'test-unit'
   s.add_development_dependency 'timecop'

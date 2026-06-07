@@ -7,3 +7,5 @@ pkg
 .idea/**/*
 *.gem
 .ruby-version
+.tool-versions
+/Gemfile.lock

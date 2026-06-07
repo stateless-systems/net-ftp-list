@@ -17,7 +17,7 @@ class Net::FTP::List::Entry
     filesize: nil,
     server_type: nil,
     symlink_destination: nil) #:nodoc:
-    @raw = raw_ls_line.respond_to?(:force_encoding) ? raw_ls_line.force_encoding('utf-8') : raw_ls_line
+    @raw = raw_ls_line.respond_to?(:force_encoding) ? raw_ls_line.dup.force_encoding('utf-8') : raw_ls_line
     @basename = basename || ''
     @type = type
     @mtime = mtime || Time.now
