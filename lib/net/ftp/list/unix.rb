@@ -14,8 +14,7 @@ class Net::FTP::List::Unix < Net::FTP::List::Parser
     ([pbcdlfmSs-])
     (((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-])))\+?\s+
     (?:(\d+)\s+)?
-    (\S+)?\s+
-    (?:(\S+(?:\s\S+)*)\s+)?
+    (\S+)?\s+(\S+)?\s+
     (?:\d+,\s+)?
     (\d+)\s+
     ((?:\d+[-/]\d+[-/]\d+)|(?:\S+\s+\S+))\s+
