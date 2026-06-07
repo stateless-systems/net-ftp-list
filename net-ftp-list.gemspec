@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bigdecimal'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
-  s.add_development_dependency 'rubocop-bsm'
   s.add_development_dependency 'test-unit'
   s.add_development_dependency 'timecop'
 end

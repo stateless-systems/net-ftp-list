@@ -2,7 +2,6 @@ require 'bundler/setup'
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'rdoc/task'
-require 'rubocop/rake_task'
 
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
@@ -17,6 +16,4 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-RuboCop::RakeTask.new(:rubocop)
-
-task default: %i[rubocop test]
+task default: %i[test]
